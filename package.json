@@ -1,0 +1,25 @@
+{
+  "name": "StudentHelp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiaconuDan/StudentHelp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DiaconuDan/StudentHelp/issues"
+  },
+  "homepage": "https://github.com/DiaconuDan/StudentHelp#readme"
+}
