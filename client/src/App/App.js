@@ -4,7 +4,7 @@ import './App.css';
 import Home from '../pages/Home';
 import List from '../pages/List';
 import Navigation from '../components/Navigation/Navigation';
-import SignUp from '../components/SignUp/SignUp' ;
+import { SignUp } from '../components/SignUp/SignUp' ;
 import SignIn from '../components/SignIn/SignIn' ;
 import Profile from '../components/Profile/Profile';
 import * as ROUTES from '../constants/routes';
