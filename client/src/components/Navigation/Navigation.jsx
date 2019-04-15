@@ -19,6 +19,9 @@ const Navigation = () => (
         <Link to={ROUTES.PROFILE}>Profile</Link>
       </li>
       <li>
+        <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+      </li>
+      <li>
         <Link to={ROUTES.LIST}>List</Link>
       </li>
     </ul>
