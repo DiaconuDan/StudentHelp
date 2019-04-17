@@ -10,10 +10,17 @@ import Profile from '../components/Profile/Profile';
 import * as ROUTES from '../constants/routes';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      authUser: null,
+    };
+  }
   render() {
     const App = () => (
       <div>
-        <Navigation />
+        <Navigation authUser={this.state.authUser} />
         <Switch>
           <Route exact path={ROUTES.LANDING} component={Home}/>
           <Route path={ROUTES.LIST} component={List}/>
