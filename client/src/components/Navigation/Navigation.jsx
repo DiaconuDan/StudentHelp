@@ -1,9 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SignOutButton from '../SignOut/SignOut';
-
+import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session/index';
+import styled from "styled-components" ;
+import {LogIn} from "styled-icons/boxicons-regular/LogIn" ;
+
+
+const LogInIcon = styled(LogIn)`
+  height: 25px;
+`
+
+const SideNavigation = styled(SideNav)`
+width: 95px;
+`
 
 const Navigation = () => (
   <div>
@@ -33,19 +45,20 @@ const NavigationAuth = () => (
 );
 
 const NavigationNonAuth = () => (
-  <ul>
-    <li>
-        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-      </li>
-
-      <li>
-        <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-      </li>
-
-      <li>
-        <Link to={ROUTES.HOME}>Home</Link>
-      </li>
-  </ul>
+  <SideNavigation>
+  <SideNavigation.Nav defaultSelected="signIn">
+      <NavItem eventKey="signIn">
+          <NavText>
+          <Link to={ROUTES.SIGN_IN} style={{ textDecoration: 'none' }}> <LogInIcon /> Sign in </Link> 
+          </NavText>
+      </NavItem>
+      <NavItem eventKey="signUp">
+      <NavText>
+          <Link to={ROUTES.SIGN_UP} style={{ textDecoration: 'none' }}> <LogInIcon /> Sign up </Link> 
+          </NavText>
+      </NavItem>
+    </SideNavigation.Nav>
+  </SideNavigation>
 );
 
 

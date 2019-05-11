@@ -6,7 +6,7 @@ import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   text-align: center;
   font-family: "Open Sans", sans-serif;
   margin: 0 auto 0 auto;
@@ -15,19 +15,18 @@ const Wrapper = styled.div`
   margin: 100px 0px 20px 0px;
 `;
 
-const Email = styled.input`
+export const Email = styled.input`
   background: #ecf0f1;
   border: #ccc 1px solid;
   border-bottom: #ccc 2px solid;
   padding: 8px;
   width: 250px;
   color: #aaaaaa;
-  margin-top: 10px;
   font-size: 1em;
   border-radius: 4px;
 `;
 
-const Password = styled.input`
+export const Password = styled.input`
   border-radius: 4px;
   background: #ecf0f1;
   border: #ccc 1px solid;
@@ -36,7 +35,7 @@ const Password = styled.input`
   font-size: 1em;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   background: #2ecc71;
   width: 125px;
   padding-top: 5px;
@@ -52,7 +51,7 @@ const Button = styled.button`
   font-size: 0.8em;
 `;
 
-const Box = styled.div`
+export const Box = styled.div`
   background: white;
   width: 300px;
   border-radius: 6px;
@@ -60,7 +59,7 @@ const Box = styled.div`
   padding: 0px 0px 70px 0px;
 `;
 
-const Error = styled.p``;
+export const Error = styled.p``;
 
 const SignIn = () => (
   <Wrapper>

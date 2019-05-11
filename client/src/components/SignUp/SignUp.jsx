@@ -4,12 +4,13 @@ import { Link, withRouter  } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../Firebase';
+import { Wrapper, Email, Password, Button, Box, Error } from "../SignIn/SignIn" ;
 
 const SignUp = () => (
-  <div>
+  <Wrapper>
     <h1>SignUp</h1>
     <SignUpForm />
-  </div>
+  </Wrapper>
 );
 
 const INITIAL_STATE = {
@@ -35,7 +36,6 @@ class SignUpFormBase extends Component {
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         // Create a user in your Firebase realtime database
-        console.log('intrat');
          this.props.firebase
           .users().add({
             username,
@@ -43,7 +43,6 @@ class SignUpFormBase extends Component {
           });
       })
       .then(() => {
-        console.log('intrat2');
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.PROFILE);
       })
@@ -70,30 +69,32 @@ class SignUpFormBase extends Component {
     const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === '';
 
     return (
+      <div>
+      <Box>
       <form onSubmit={this.onSubmit}>
 
-        <input
+        <Email
           name="username"
           value={username}
           onChange={this.onChange}
           type="text"
           placeholder="Full Name"
         />
-        <input
+        <Email
           name="email"
           value={email}
           onChange={this.onChange}
           type="text"
           placeholder="Email Address"
         />
-        <input
+        <Password
           name="passwordOne"
           value={passwordOne}
           onChange={this.onChange}
           type="password"
           placeholder="Password"
         />
-        <input
+        <Password
           name="passwordTwo"
           value={passwordTwo}
           onChange={this.onChange}
@@ -101,10 +102,13 @@ class SignUpFormBase extends Component {
           placeholder="Confirm Password"
         />
 
-        <button disabled={isInvalid} type="submit">Sign Up</button>
+        <Button disabled={isInvalid} type="submit">Sign Up</Button>
 
-        {error && <p>{error.message}</p>}
+       
       </form>
+      </Box>
+      {error && <Error>{error.message}</Error>}
+      </div>
     );
   }
 }
