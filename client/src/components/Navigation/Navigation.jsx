@@ -28,20 +28,20 @@ const Navigation = () => (
 );
 
 const NavigationAuth = () => (
-  <ul>
-    <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.HOME}>Home</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.PROFILE}>Profile</Link>
-      </li>
-      <li>
-        <SignOutButton />
-      </li>
-</ul>
+  <SideNavigation>
+  <SideNavigation.Nav defaultSelected="profile">
+      <NavItem eventKey="profile">
+          <NavText>
+          <Link to={ROUTES.PROFILE} style={{ textDecoration: 'none' }}> <LogInIcon /> Profile </Link> 
+          </NavText>
+      </NavItem>
+      <NavItem eventKey="signUp">
+      <NavText>
+         <SignOutButton />
+      </NavText>
+      </NavItem>
+    </SideNavigation.Nav>
+  </SideNavigation>
 );
 
 const NavigationNonAuth = () => (
