@@ -20,8 +20,8 @@ export const Email = styled.input`
   border: #ccc 1px solid;
   border-bottom: #ccc 2px solid;
   padding: 8px;
-  width: 250px;
-  color: #aaaaaa;
+  width: 250px; 
+  margin-top: 10px;
   font-size: 1em;
   border-radius: 4px;
 `;
@@ -33,6 +33,7 @@ export const Password = styled.input`
   padding: 8px;
   width: 250px;
   font-size: 1em;
+  margin-top: 10px;
 `;
 
 export const Button = styled.button`

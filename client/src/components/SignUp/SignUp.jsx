@@ -2,9 +2,21 @@ import React, { Component } from 'react';
 import * as ROUTES from '../../constants/routes';
 import { Link, withRouter  } from 'react-router-dom';
 import { compose } from 'recompose';
+import styled from "styled-components" ;
 
 import { withFirebase } from '../Firebase';
 import { Wrapper, Email, Password, Button, Box, Error } from "../SignIn/SignIn" ;
+
+export const Options = styled.select`
+  border-radius: 4px;
+  background: #ecf0f1;
+  border: #ccc 1px solid;
+  padding: 5px;
+  width: 268px;
+  height: 37.4px;
+  font-size: 1em;
+}
+`;
 
 const SignUp = () => (
   <Wrapper>
@@ -73,6 +85,10 @@ class SignUpFormBase extends Component {
       <Box>
       <form onSubmit={this.onSubmit}>
 
+        <Options>
+          <option> User account</option>
+          <option> Company account</option>
+        </Options>
         <Email
           name="username"
           value={username}
@@ -101,6 +117,8 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
+
+     
 
         <Button disabled={isInvalid} type="submit">Sign Up</Button>
 

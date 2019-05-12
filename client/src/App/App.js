@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Home from '../pages/Home';
 import List from '../pages/List';
 import Navigation from '../components/Navigation/Navigation';
 import { SignUp } from '../components/SignUp/SignUp' ;
@@ -14,7 +13,7 @@ const App = () => (
       <div>
         <Navigation />
         <Switch>
-          <Route exact path={ROUTES.LANDING} component={Home}/>
+          <Route exact path={ROUTES.LANDING} component={SignIn}/>
           <Route path={ROUTES.LIST} component={List}/>
           <Route path={ROUTES.SIGN_UP} component={SignUp} />
           <Route path={ROUTES.SIGN_IN} component={SignIn} />
