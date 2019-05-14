@@ -23,19 +23,20 @@ const Navigation = () => (
       {authUser =>
         authUser ? <NavigationAuth /> : <NavigationNonAuth />
       }
+   
     </AuthUserContext.Consumer>
   </div>
 );
 
 const NavigationAuth = () => (
-  <SideNavigation>
+  <SideNavigation style={{ background: '#57308b', color: '#FFF'}}>
   <SideNavigation.Nav defaultSelected="profile">
       <NavItem eventKey="profile">
           <NavText>
           <Link to={ROUTES.PROFILE} style={{ textDecoration: 'none' }}> <LogInIcon /> Profile </Link> 
           </NavText>
       </NavItem>
-      <NavItem eventKey="signUp">
+      <NavItem eventKey="signUp" navitemStyle={{marginTop:580, marginLeft: 10}}>
       <NavText>
          <SignOutButton />
       </NavText>
@@ -45,7 +46,7 @@ const NavigationAuth = () => (
 );
 
 const NavigationNonAuth = () => (
-  <SideNavigation>
+  <SideNavigation style={{ background: '#57308b', color: '#FFF'}}>
   <SideNavigation.Nav defaultSelected="signIn">
       <NavItem eventKey="signIn">
           <NavText>
