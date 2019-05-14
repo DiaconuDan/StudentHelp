@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withAuthorization } from '../Session';
+import { withAuthorization } from '../general/Session';
 
 const Profile = () => (
   <div>

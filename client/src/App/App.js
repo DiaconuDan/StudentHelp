@@ -2,12 +2,12 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import List from '../pages/List';
-import Navigation from '../components/Navigation/Navigation';
-import { SignUp } from '../components/SignUp/SignUp' ;
-import { SignIn } from '../components/SignIn/SignIn' ;
+import Navigation from '../components/general/Navigation/Navigation';
+import { SignUp } from '../components/general/SignUp/SignUp' ;
+import { SignIn } from '../components/general/SignIn/SignIn' ;
 import Profile from '../components/Profile/Profile';
 import * as ROUTES from '../constants/routes';
-import { withAuthentication } from '../components/Session/index';
+import { withAuthentication } from '../components/general/Session/index';
 
 const App = () => (
       <div>

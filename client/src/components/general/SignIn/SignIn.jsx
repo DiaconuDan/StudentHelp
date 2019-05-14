@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { SignUpLink } from '../SignUp/SignUp';
 import { withFirebase } from "../Firebase";
-import * as ROUTES from "../../constants/routes";
+import * as ROUTES from "../../../constants/routes";
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
@@ -64,7 +64,7 @@ export const Error = styled.p``;
 
 const SignIn = () => (
   <Wrapper>
-    <h1>SignIn</h1>
+    <h1>Login</h1>
     <SignInForm />
     <SignUpLink />
   </Wrapper>

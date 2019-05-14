@@ -24,9 +24,15 @@ class Firebase {
     doPasswordUpdate = password =>
          this.auth.currentUser.updatePassword(password);
 
+    company = uid => this.db.collection(`companies/${uid}`);
+
+    companies = () => this.db.collection('companies');
+
     user = uid => this.db.collection(`users/${uid}`);
 
     users = () => this.db.collection('users');
+
+
 }
 
 export default Firebase;

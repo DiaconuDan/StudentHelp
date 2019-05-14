@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import * as ROUTES from '../../constants/routes';
+import * as ROUTES from '../../../constants/routes';
 import { Link, withRouter  } from 'react-router-dom';
 import { compose } from 'recompose';
 import styled from "styled-components" ;
 
 import { withFirebase } from '../Firebase';
 import { Wrapper, Email, Password, Button, Box, Error } from "../SignIn/SignIn" ;
+import { STUDENT, COMPANY } from "./roles" ;
 
 export const Options = styled.select`
   border-radius: 4px;
@@ -20,16 +21,17 @@ export const Options = styled.select`
 
 const SignUp = () => (
   <Wrapper>
-    <h1>SignUp</h1>
+    <h1>Register</h1>
     <SignUpForm />
   </Wrapper>
 );
 
 const INITIAL_STATE = {
-  username: '',
+  fullName: '',
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  role: STUDENT,
   error: null,
 };
 
@@ -42,17 +44,27 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
-
+    const { fullName, email, passwordOne, role } = this.state;
+    
+   
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        // Create a user in your Firebase realtime database
-         this.props.firebase
+        if ( role === STUDENT ) {
+          this.props.firebase
           .users().add({
-            username,
+            fullName,
             email
           });
+        } else 
+        if ( role === COMPANY) {
+          this.props.firebase
+          .companies().add({
+            fullName,
+            email
+          });
+        }
+         
       })
       .then(() => {
         this.setState({ ...INITIAL_STATE });
@@ -69,29 +81,33 @@ class SignUpFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  render() {
+  onChangeRole = event => {
+    this.setState({ role: event.target.value });
+  };
+
+  render() { 
     const {
-      username,
+      fullName,
       email,
       passwordOne,
       passwordTwo,
       error,
     } = this.state;
 
-    const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || username === '';
+    const isInvalid = passwordOne !== passwordTwo || passwordOne === '' || email === '' || fullName === '';
 
     return (
       <div>
       <Box>
       <form onSubmit={this.onSubmit}>
 
-        <Options>
-          <option> User account</option>
-          <option> Company account</option>
+        <Options onChange={this.onChangeRole}>
+          <option  value={STUDENT} > Student account</option>
+          <option  value={COMPANY}> Company account</option>
         </Options>
         <Email
-          name="username"
-          value={username}
+          name="fullName"
+          value={fullName}
           onChange={this.onChange}
           type="text"
           placeholder="Full Name"
@@ -118,11 +134,8 @@ class SignUpFormBase extends Component {
           placeholder="Confirm Password"
         />
 
-     
-
         <Button disabled={isInvalid} type="submit">Sign Up</Button>
 
-       
       </form>
       </Box>
       {error && <Error>{error.message}</Error>}
