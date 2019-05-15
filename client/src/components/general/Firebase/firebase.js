@@ -1,38 +1,58 @@
-import app from 'firebase/app';
-import 'firebase/auth';
+import app from "firebase/app";
+import "firebase/auth";
 import "firebase/firestore";
-import {config} from './config' ;
-
+import { config } from "./config";
 
 class Firebase {
-    constructor() {
-      app.initializeApp(config);
+  constructor() {
+    app.initializeApp(config);
 
-      this.auth = app.auth();
-      this.db = app.firestore();
-    }
+    this.auth = app.auth();
+    this.db = app.firestore();
+  }
 
-    doCreateUserWithEmailAndPassword = (email, password) =>
-        this.auth.createUserWithEmailAndPassword(email, password);
+  doCreateUserWithEmailAndPassword = (email, password) =>
+    this.auth.createUserWithEmailAndPassword(email, password);
 
-    doSignInWithEmailAndPassword = (email, password) =>
-        this.auth.signInWithEmailAndPassword(email, password);
+  doSignInWithEmailAndPassword = (email, password) =>
+    this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignOut = () =>
-         this.auth.signOut();
+  doSignOut = () => this.auth.signOut();
 
-    doPasswordUpdate = password =>
-         this.auth.currentUser.updatePassword(password);
+  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
-    company = uid => this.db.collection(`companies/${uid}`);
+  // *** Merge Auth and DB User API *** //
 
-    companies = () => this.db.collection('companies');
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.user(authUser.uid)
+          .once("value")
+          .then(snapshot => {
+            const dbUser = snapshot.val();
 
-    user = uid => this.db.collection(`users/${uid}`);
+            // merge auth and db user
+            authUser = {
+              uid: authUser.uid,
+              email: authUser.email,
+              ...dbUser
+            };
+            next(authUser);
+          });
+      } else {
+        fallback();
+      }
+    });
 
-    users = () => this.db.collection('users');
+  // Collections of the database
 
+  company = uid => this.db.collection(`companies/${uid}`);
 
+  companies = () => this.db.collection("companies");
+
+  user = uid => this.db.doc(`users/${uid}`);
+
+  users = () => this.db.collection("users");
 }
 
 export default Firebase;

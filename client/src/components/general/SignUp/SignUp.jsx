@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import * as ROUTES from '../../../constants/routes';
-import { Link, withRouter  } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import styled from "styled-components" ;
+import styled from "styled-components";
 
 import { withFirebase } from '../Firebase';
-import { Wrapper, Email, Password, Button, Box, Error } from "../SignIn/SignIn" ;
-import { STUDENT, COMPANY } from "./roles" ;
+import { Wrapper, Email, Password, Button, Box, Error } from "../SignIn/SignIn";
+import * as ROLES from "./roles";
 
 export const Options = styled.select`
   border-radius: 4px;
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
-  role: STUDENT,
+  role: ROLES.STUDENT,
   error: null,
 };
 
@@ -45,28 +45,32 @@ class SignUpFormBase extends Component {
 
   onSubmit = event => {
     const { fullName, email, passwordOne, role } = this.state;
-    
-   
+
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        if ( role === STUDENT ) {
-          this.props.firebase
-          .users().add({
+        const uid = authUser.user.uid;
+        console.log("uid", uid);
+        // this.props.firebase
+        // .users().add({
+        //   uid,
+        //   fullName,
+        //   email,
+        //   role
+        // });
+        this.props.firebase.user(authUser.user.uid).set(
+          {
             fullName,
-            email
-          });
-        } else 
-        if ( role === COMPANY) {
-          this.props.firebase
-          .companies().add({
-            fullName,
-            email
-          });
-        }
-         
+            email,
+            role
+          }, { merge: true },
+
+        );
+
       })
       .then(() => {
+
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.PROFILE);
       })
@@ -85,7 +89,7 @@ class SignUpFormBase extends Component {
     this.setState({ role: event.target.value });
   };
 
-  render() { 
+  render() {
     const {
       fullName,
       email,
@@ -98,47 +102,47 @@ class SignUpFormBase extends Component {
 
     return (
       <div>
-      <Box>
-      <form onSubmit={this.onSubmit}>
+        <Box>
+          <form onSubmit={this.onSubmit}>
 
-        <Options onChange={this.onChangeRole}>
-          <option  value={STUDENT} > Student account</option>
-          <option  value={COMPANY}> Company account</option>
-        </Options>
-        <Email
-          name="fullName"
-          value={fullName}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <Email
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <Password
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <Password
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
+            <Options onChange={this.onChangeRole}>
+              <option value={ROLES.STUDENT} > Student account</option>
+              <option value={ROLES.COMPANY}> Company account</option>
+            </Options>
+            <Email
+              name="fullName"
+              value={fullName}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Full Name"
+            />
+            <Email
+              name="email"
+              value={email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email Address"
+            />
+            <Password
+              name="passwordOne"
+              value={passwordOne}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Password"
+            />
+            <Password
+              name="passwordTwo"
+              value={passwordTwo}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Confirm Password"
+            />
 
-        <Button disabled={isInvalid} type="submit">Sign Up</Button>
+            <Button disabled={isInvalid} type="submit">Sign Up</Button>
 
-      </form>
-      </Box>
-      {error && <Error>{error.message}</Error>}
+          </form>
+        </Box>
+        {error && <Error>{error.message}</Error>}
       </div>
     );
   }

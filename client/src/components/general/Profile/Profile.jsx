@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withAuthorization } from '../general/Session';
+import { withAuthorization } from '../Session';
 
 const Profile = () => (
   <div>
@@ -8,7 +8,7 @@ const Profile = () => (
   </div>
 );
 
-const condition = authUser => authUser;
+const condition = authUser => !!authUser.role === "STUDENT";
 
 
 export default withAuthorization(condition)(Profile);
