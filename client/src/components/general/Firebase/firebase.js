@@ -27,9 +27,9 @@ class Firebase {
     this.auth.onAuthStateChanged(authUser => {
       if (authUser) {
         this.user(authUser.uid)
-          .once("value")
+          .get()
           .then(snapshot => {
-            const dbUser = snapshot.val();
+            const dbUser = snapshot.data();
 
             // merge auth and db user
             authUser = {
@@ -43,12 +43,6 @@ class Firebase {
         fallback();
       }
     });
-
-  // Collections of the database
-
-  company = uid => this.db.collection(`companies/${uid}`);
-
-  companies = () => this.db.collection("companies");
 
   user = uid => this.db.doc(`users/${uid}`);
 

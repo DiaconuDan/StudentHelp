@@ -8,7 +8,7 @@ const Profile = () => (
   </div>
 );
 
-const condition = authUser => !!authUser.role === "STUDENT";
+const condition = authUser => !!authUser;
 
 
 export default withAuthorization(condition)(Profile);
