@@ -21,19 +21,40 @@ const Navigation = () => (
   <div>
     <AuthUserContext.Consumer>
       {authUser =>
-        authUser  ? <NavigationAuth /> : <NavigationNonAuth />
+        authUser  ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
       }
    
     </AuthUserContext.Consumer>
   </div>
 );
 
-const NavigationAuth = () => (
+const NavigationAuth = ( {authUser} ) => (
+  authUser.role === "COMPANY" ? <NavigationCompanyAuth /> : <NavigationStudentAuth />
+);
+
+const NavigationCompanyAuth = () => (
   <SideNavigation style={{ background: '#57308b', color: '#FFF'}}>
   <SideNavigation.Nav defaultSelected="profile">
       <NavItem eventKey="profile">
           <NavText>
-          <Link to={ROUTES.PROFILE} style={{ textDecoration: 'none' }}> <LogInIcon /> Profile </Link> 
+          <Link to={ROUTES.PROFILE} style={{ textDecoration: 'none' }}> <LogInIcon /> CompanyPr </Link> 
+          </NavText>
+      </NavItem>
+      <NavItem eventKey="signUp" navitemStyle={{marginTop:580, marginLeft: 10}}>
+      <NavText>
+         <SignOutButton />
+      </NavText>
+      </NavItem>
+    </SideNavigation.Nav>
+  </SideNavigation>
+);
+
+const NavigationStudentAuth = () => (
+  <SideNavigation style={{ background: '#57308b', color: '#FFF'}}>
+  <SideNavigation.Nav defaultSelected="profile">
+      <NavItem eventKey="profile">
+          <NavText>
+          <Link to={ROUTES.PROFILE} style={{ textDecoration: 'none' }}> <LogInIcon /> StudentPr </Link> 
           </NavText>
       </NavItem>
       <NavItem eventKey="signUp" navitemStyle={{marginTop:580, marginLeft: 10}}>
