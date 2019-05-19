@@ -37,8 +37,6 @@ class Firebase {
               email: authUser.email,
               ...dbUser
             };
-
-     
             next(authUser);
           });
       } else {

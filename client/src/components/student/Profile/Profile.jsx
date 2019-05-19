@@ -4,7 +4,7 @@ import { withFirebase } from "../../general/Firebase" ;
 import { withAuthorization } from '../../general/Session';
 import { AuthUserContext } from '../../general/Session/index';
 
-const CompanyProfile = () => (
+const StudentProfile = () => (
   <div>
     <AuthUserContext.Consumer>
       {authUser =>
@@ -12,7 +12,7 @@ const CompanyProfile = () => (
       }
    
     </AuthUserContext.Consumer>
-   <h1 style={{textAlign: "center"}}> Profile of the company </h1>
+   <h1 style={{textAlign: "center"}}> Profile of the user </h1>
   </div>
 );
 
@@ -22,4 +22,4 @@ const condition = authUser => authUser;
 export default compose(
   withAuthorization(condition),
   withFirebase,
-)(CompanyProfile);
+)(StudentProfile);
