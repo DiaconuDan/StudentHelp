@@ -2,14 +2,21 @@ import { compose } from "recompose";
 import React, { Component } from "react";
 import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
-import { Wrapper, Email, Button, Box } from "../../general/SignIn/SignIn";
+import {
+  Wrapper,
+  Email,
+  Button,
+  Box,
+  Error
+} from "../../general/SignIn/SignIn";
 
 const INITIAL_STATE = {
   location: "",
-  studentsNumber: "",
-  hourlyPayment: "",
-  startDate: "",
-  error: null
+  studentsNumber: null,
+  hourlyPayment: null,
+  date: null,
+  startHour: "",
+  endingHour: ""
 };
 
 class AddJob extends Component {
@@ -20,19 +27,30 @@ class AddJob extends Component {
   }
 
   onSubmit = event => {
-    event.preventDefault();
     const {
       location,
       hourlyPayment,
-      startDate,
+      date,
       startHour,
-      endingHour
+      endingHour,
+      studentsNumber
     } = this.state;
 
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    const companyUserUID = authUser.uid;
+    console.warn(authUser);
+    this.props.firebase.jobs().add({
+      companyUserUID,
+      location,
+      hourlyPayment,
+      date,
+      startHour,
+      endingHour,
+      studentsNumber
+    });
     this.setState({ ...INITIAL_STATE });
+    event.preventDefault();
     event.target.reset();
-    console.warn("intrat");
-    console.warn(this.state);
   };
 
   onChange = event => {
@@ -43,41 +61,48 @@ class AddJob extends Component {
     const {
       location,
       hourlyPayment,
-      startDate,
+      date,
       startHour,
-      endingHour
+      endingHour,
+      studentsNumber
     } = this.state;
+
+    const isInvalid = startHour >= endingHour;
 
     return (
       <Wrapper style={{ marginTop: 150 }}>
         <div>
           <Box>
             <h1>Add Job</h1>
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit={this.onSubmit.bind(this)}>
               <Email
                 name="location"
                 type="text"
                 placeholder="Location"
                 onChange={this.onChange}
+                required
               />
               <Email
                 name="studentsNumber"
-                type="text"
-                placeholder="Number of students needeed"
+                type="number"
+                placeholder="Number of students needed"
+                onChange={this.onChange}
+                required
               />
               <Email
                 name="hourlyPayment"
-                type="text"
-                placeholder="Payment per hour"
+                type="number"
+                placeholder="Payment per hour in RON"
                 onChange={this.onChange}
+                required
               />
-
               <Email
-                name="startDate"
+                name="date"
                 type="text"
                 placeholder="Date"
                 onFocus={e => (e.target.type = "date")}
                 onChange={this.onChange}
+                required
               />
               <Email
                 name="startHour"
@@ -85,6 +110,7 @@ class AddJob extends Component {
                 placeholder="Starting hour"
                 onFocus={e => (e.target.type = "time")}
                 onChange={this.onChange}
+                required
               />
               <Email
                 name="endingHour"
@@ -92,11 +118,15 @@ class AddJob extends Component {
                 placeholder="Ending hour"
                 onFocus={e => (e.target.type = "time")}
                 onChange={this.onChange}
+                required
               />
 
-              <Button type="submit">Submit</Button>
+              <Button disabled={isInvalid} type="submit">
+                Submit
+              </Button>
             </form>
           </Box>
+          {isInvalid && <Error> Start hour should be before end hour!</Error>}
         </div>
       </Wrapper>
     );
