@@ -36,24 +36,25 @@ class Fulfilment extends Component {
         jobsSnapshot.forEach(jobDoc => {
           this.props.firebase
             .responses()
-            .where('jobID', '==', jobDoc.id)
-            .where('response', '==', true)
+            .where('jobUID', '==', jobDoc.id)
+            .where('studentResponse', '==', true)
             .onSnapshot(responsesSnapshot => { // iau toti studentii care au dat going la job din colectia responses
+            
               let studentsEnrolledInJob = [];
 
               responsesSnapshot.forEach(response => {
                 studentsEnrolledInJob.push(response.data().studentUserUID );
               });
 
-              jobs.push({ ...jobDoc.data(), studentsEnrolledInJob });
+              jobs.push( {...jobDoc.data(), studentsEnrolledInJob } );
+              this.setState({
+                jobs,
+                loading: false,
+              });
             });
 
         });
-        console.warn(jobs);
-        this.setState({
-          jobs,
-          loading: false,
-        });
+       
       });
   }
 
@@ -66,7 +67,7 @@ class Fulfilment extends Component {
     return (
       <div>
         <h1 style={{ textAlign: "center" }}>
-          Here will be displayed the company job situation{" "}
+         Fulfilment overview
         </h1>
         <SimpleTable jobs={jobs} />
       </div>

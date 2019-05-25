@@ -20,6 +20,7 @@ const INITIAL_STATE = {
 };
 
 class AddJob extends Component {
+  
   constructor(props) {
     super(props);
 
@@ -38,8 +39,10 @@ class AddJob extends Component {
 
     const authUser = JSON.parse(localStorage.getItem("authUser"));
     const companyUserUID = authUser.uid;
+    const companyFullname = authUser.fullName;
     this.props.firebase.jobs().add({
       companyUserUID,
+      companyFullname,
       location,
       hourlyPayment,
       date,

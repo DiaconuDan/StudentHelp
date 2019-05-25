@@ -21,27 +21,33 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(name, calories, fat, carbs, protein) {
+function createData(status, startTime, endTime, studentsEnrolled, hourlyPayment) {
   id += 1;
-  return { id, name, calories, fat, carbs, protein };
+  return { id, status, startTime, endTime, studentsEnrolled, hourlyPayment };
 }
 
 // job : { studentsEnrolled: { UIDS}, }
 
-const rows = [
-  createData("Upcoming", "30 July 2019 12:00", "30 July 2019 15:00", "1/4", 25),
-  createData("Running", "23 May 2019 16:00", "23 May 2019 20:00", "2/2", 35),
-  createData("Finished", "1 May 2019 13:00", "1 May 2019 16:00", "3/3", 40),
-  createData("Finished", "2 May 2019 13:00", "2 May 2019 16:00", "3/3", 40),
-  createData("Finished", "3 May 2019 13:00", "3 May 2019 16:00", "3/3", 40),
-  createData("Finished", "4 May 2019 13:00", "4 May 2019 16:00", "3/3", 40),
-  createData("Finished", "5 May 2019 13:00", "5 May 2019 16:00", "3/3", 40),
-  createData("Finished", "6 May 2019 13:00", "6 May 2019 16:00", "3/3", 40),
-  createData("Finished", "7 May 2019 13:00", "7 May 2019 16:00", "3/3", 40)
-];
+const getStatus = ( date, startHour, endingHour) => {
+  const currentDate = Date.now();
+  console.log(currentDaten);
+  return "Upcoming" ;
+}
 
-function SimpleTable(props) {
-  const { classes, jobs } = props;
+const generateRows = ( jobs ) => {
+  let rows = [] ;
+  jobs.forEach( job => {
+    const status = getStatus( job.date, job.startHour, job.endingHour) ;
+    rows.push(createData(status, job.date + " " + job.startHour, job.date + " " + job.endingHour, job.studentsEnrolledInJob.length + "/" + job.studentsNumber, job.hourlyPayment));
+  })
+  return rows ;
+}
+
+
+const  SimpleTable = (props) => {
+  const {  classes, jobs } = props;
+  console.warn(jobs);
+  const rows = generateRows(jobs) ;
 
   return (
     <Paper className={classes.root}>
@@ -59,12 +65,12 @@ function SimpleTable(props) {
           {rows.map(row => (
             <TableRow key={row.id}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.status}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{row.startTime}</TableCell>
+              <TableCell align="right">{row.endTime}</TableCell>
+              <TableCell align="right">{row.studentsEnrolled}</TableCell>
+              <TableCell align="right">{row.hourlyPayment}</TableCell>
             </TableRow>
           ))}
         </TableBody>
