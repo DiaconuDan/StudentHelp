@@ -26,6 +26,8 @@ function createData(name, calories, fat, carbs, protein) {
   return { id, name, calories, fat, carbs, protein };
 }
 
+// job : { studentsEnrolled: { UIDS}, }
+
 const rows = [
   createData("Upcoming", "30 July 2019 12:00", "30 July 2019 15:00", "1/4", 25),
   createData("Running", "23 May 2019 16:00", "23 May 2019 20:00", "2/2", 35),
@@ -39,7 +41,7 @@ const rows = [
 ];
 
 function SimpleTable(props) {
-  const { classes } = props;
+  const { classes, jobs } = props;
 
   return (
     <Paper className={classes.root}>

@@ -38,7 +38,6 @@ class AddJob extends Component {
 
     const authUser = JSON.parse(localStorage.getItem("authUser"));
     const companyUserUID = authUser.uid;
-    console.warn(authUser);
     this.props.firebase.jobs().add({
       companyUserUID,
       location,
@@ -59,12 +58,8 @@ class AddJob extends Component {
 
   render() {
     const {
-      location,
-      hourlyPayment,
-      date,
       startHour,
-      endingHour,
-      studentsNumber
+      endingHour
     } = this.state;
 
     const isInvalid = startHour >= endingHour && endingHour !== "" && startHour !== "" ;
@@ -120,7 +115,6 @@ class AddJob extends Component {
                 onChange={this.onChange}
                 required
               />
-
               <Button disabled={isInvalid} type="submit">
                 Submit
               </Button>
