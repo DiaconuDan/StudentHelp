@@ -67,7 +67,7 @@ class AddJob extends Component {
       studentsNumber
     } = this.state;
 
-    const isInvalid = startHour >= endingHour;
+    const isInvalid = startHour >= endingHour && endingHour !== "" && startHour !== "" ;
 
     return (
       <Wrapper style={{ marginTop: 150 }}>
