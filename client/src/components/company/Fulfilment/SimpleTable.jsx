@@ -7,6 +7,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import moment from "moment" ;
+
+// TO DO : ending hour => end hour
+// sortari
 
 const styles = theme => ({
   root: {
@@ -21,24 +25,36 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(status, startTime, endTime, studentsEnrolled, hourlyPayment) {
+function createData(status, startDate, endDate, location, studentsEnrolled, hourlyPayment) {
   id += 1;
-  return { id, status, startTime, endTime, studentsEnrolled, hourlyPayment };
+  return { id, status, startDate, endDate,location,  studentsEnrolled, hourlyPayment };
 }
 
 // job : { studentsEnrolled: { UIDS}, }
 
-const getStatus = ( date, startHour, endingHour) => {
-  const currentDate = Date.now();
-  console.log(currentDaten);
-  return "Upcoming" ;
+const getStatus = ( jobStartDate, jobEndDate) => {
+
+
+  const currentDate = moment().format('YYYY-MM-DD HH:mm');
+  
+
+  if ( jobStartDate > currentDate) {
+    return "Upcoming" ;
+  }
+  if ( jobEndDate < currentDate) {
+    return "Finished" ;
+  }
+  if ( currentDate>= jobStartDate && currentDate <= jobEndDate) {
+    return "Running" ;
+  } 
+ 
 }
 
 const generateRows = ( jobs ) => {
   let rows = [] ;
   jobs.forEach( job => {
-    const status = getStatus( job.date, job.startHour, job.endingHour) ;
-    rows.push(createData(status, job.date + " " + job.startHour, job.date + " " + job.endingHour, job.studentsEnrolledInJob.length + "/" + job.studentsNumber, job.hourlyPayment));
+    const status = getStatus( job.startDate, job.endDate) ;
+    rows.push(createData(status, job.startDate, job.endDate, job.location, job.studentsEnrolledInJob.length + "/" + job.studentsNumber, job.hourlyPayment));
   })
   return rows ;
 }
@@ -46,7 +62,6 @@ const generateRows = ( jobs ) => {
 
 const  SimpleTable = (props) => {
   const {  classes, jobs } = props;
-  console.warn(jobs);
   const rows = generateRows(jobs) ;
 
   return (
@@ -55,8 +70,9 @@ const  SimpleTable = (props) => {
         <TableHead>
           <TableRow>
             <TableCell>Status</TableCell>
-            <TableCell align="right">StartTime</TableCell>
-            <TableCell align="right">EndTime</TableCell>
+            <TableCell align="right">StartDate</TableCell>
+            <TableCell align="right">EndDate</TableCell>
+            <TableCell align="right">Location</TableCell>
             <TableCell align="right">Students Enrolled</TableCell>
             <TableCell align="right">Payment per hour</TableCell>
           </TableRow>
@@ -67,8 +83,9 @@ const  SimpleTable = (props) => {
               <TableCell component="th" scope="row">
                 {row.status}
               </TableCell>
-              <TableCell align="right">{row.startTime}</TableCell>
-              <TableCell align="right">{row.endTime}</TableCell>
+              <TableCell align="right">{row.startDate}</TableCell>
+              <TableCell align="right">{row.endDate}</TableCell>
+              <TableCell align="right">{row.location}</TableCell>
               <TableCell align="right">{row.studentsEnrolled}</TableCell>
               <TableCell align="right">{row.hourlyPayment}</TableCell>
             </TableRow>

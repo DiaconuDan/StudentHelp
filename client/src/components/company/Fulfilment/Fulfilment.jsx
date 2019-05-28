@@ -39,14 +39,14 @@ class Fulfilment extends Component {
             .where('jobUID', '==', jobDoc.id)
             .where('studentResponse', '==', true)
             .onSnapshot(responsesSnapshot => { // iau toti studentii care au dat going la job din colectia responses
-            
+
               let studentsEnrolledInJob = [];
 
               responsesSnapshot.forEach(response => {
-                studentsEnrolledInJob.push(response.data().studentUserUID );
+                studentsEnrolledInJob.push(response.data().studentUserUID);
               });
 
-              jobs.push( {...jobDoc.data(), studentsEnrolledInJob } );
+              jobs.push({ ...jobDoc.data(), studentsEnrolledInJob });
               this.setState({
                 jobs,
                 loading: false,
@@ -54,7 +54,7 @@ class Fulfilment extends Component {
             });
 
         });
-       
+
       });
   }
 
@@ -63,15 +63,16 @@ class Fulfilment extends Component {
 
     if (loading) {
       return <h1 style={{ textAlign: "center" }}>Loading ...</h1>;
-    }
-    return (
-      <div>
-        <h1 style={{ textAlign: "center" }}>
-         Fulfilment overview
+    } else {
+      return (
+        <div>
+          <h1 style={{ textAlign: "center" }}>
+            Fulfilment overview
         </h1>
-        <SimpleTable jobs={jobs} />
-      </div>
-    );
+          <SimpleTable jobs={jobs} />
+        </div>
+      );
+    }
   }
 
 }

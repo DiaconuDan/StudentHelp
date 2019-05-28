@@ -9,6 +9,7 @@ import {
   Box,
   Error
 } from "../../general/SignIn/SignIn";
+import moment from "moment"; 
 
 const INITIAL_STATE = {
   location: "",
@@ -16,7 +17,7 @@ const INITIAL_STATE = {
   hourlyPayment: null,
   date: null,
   startHour: "",
-  endingHour: ""
+  endHour: ""
 };
 
 class AddJob extends Component {
@@ -33,21 +34,23 @@ class AddJob extends Component {
       hourlyPayment,
       date,
       startHour,
-      endingHour,
+      endHour,
       studentsNumber
     } = this.state;
 
     const authUser = JSON.parse(localStorage.getItem("authUser"));
     const companyUserUID = authUser.uid;
     const companyFullname = authUser.fullName;
+    const startDate = moment(date + " "+startHour).format('YYYY-MM-DD HH:mm');
+    const endDate = moment(date + " "+endHour).format('YYYY-MM-DD HH:mm');
+
     this.props.firebase.jobs().add({
       companyUserUID,
       companyFullname,
       location,
       hourlyPayment,
-      date,
-      startHour,
-      endingHour,
+      startDate,
+      endDate,
       studentsNumber
     });
     this.setState({ ...INITIAL_STATE });
@@ -62,10 +65,10 @@ class AddJob extends Component {
   render() {
     const {
       startHour,
-      endingHour
+      endHour
     } = this.state;
 
-    const isInvalid = startHour >= endingHour && endingHour !== "" && startHour !== "" ;
+    const isInvalid = startHour >= endHour && endHour !== "" && startHour !== "" ;
 
     return (
       <Wrapper style={{ marginTop: 150 }}>
@@ -111,7 +114,7 @@ class AddJob extends Component {
                 required
               />
               <Email
-                name="endingHour"
+                name="endHour"
                 type="text"
                 placeholder="Ending hour"
                 onFocus={e => (e.target.type = "time")}
