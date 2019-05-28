@@ -30,7 +30,7 @@ class AddJob extends Component {
 
   onSubmit = event => {
     const {
-      location,
+      location ,
       hourlyPayment,
       date,
       startHour,
