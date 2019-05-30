@@ -52,7 +52,10 @@ class AddJob extends Component {
       startDate,
       endDate,
       studentsNumber
-    });
+    }).then(ref => {
+      ref.set({ docID: ref.id }, { merge: true }) });
+
+
     this.setState({ ...INITIAL_STATE });
     event.preventDefault();
     event.target.reset();
