@@ -17,7 +17,7 @@ class Fulfilment extends Component {
     super(props);
 
     this.state = {
-      loading: false,
+      loading: true,
       jobs: [],
     };
   }
@@ -34,10 +34,10 @@ class Fulfilment extends Component {
         let jobs = [];
         jobsSnapshot.forEach(jobDoc => {
           jobs.push({ ...jobDoc.data() });
-          this.setState({
-            jobs,
-            loading: false,
-          });
+        });
+        this.setState({
+          jobs,
+          loading: false,
         });
       });
   }

@@ -54,7 +54,7 @@ const generateRows = ( jobs ) => {
   let rows = [] ;
   jobs.forEach( job => {
     const status = getStatus( job.startDate, job.endDate) ;
-    rows.push(createData(status, job.startDate, job.endDate, job.location, job.responses.length + "/" + job.studentsNumber, job.hourlyPayment));
+    rows.push(createData(status, moment(job.startDate).format('DD-MM-YYYY HH:mm'), moment(job.endDate).format('DD-MM-YYYY HH:mm'), job.location, job.responses.length + "/" + job.studentsNumber, job.hourlyPayment));
   })
   return rows ;
 }

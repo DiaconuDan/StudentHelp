@@ -44,12 +44,15 @@ class Swiper extends Component {
         jobsSnapshot.forEach(jobDoc => {
           let userAlreadyResponded = false;
           const job = jobDoc.data();
+         
           job.responses.forEach(response => {
+            console.log(response);
+            console.log(authUser.uid);
             if (response.studentUserUID === authUser.uid) {
               userAlreadyResponded = true;
             }
           })
-          if (userAlreadyResponded == false && job.startDate < currentDate) {
+          if ( !userAlreadyResponded && job.startDate > currentDate ) {
             jobs.push(job);
           }
         });
@@ -71,6 +74,7 @@ onAnswer = answer => {
 
   const studentUserUID = authUser.uid;
   const jobUID = jobs[0].docID;
+  const currentResponses = jobs[0].responses ; 
   let studentResponse;
 
   if (answer === ACCEPT_ANSWER) {
@@ -82,16 +86,18 @@ onAnswer = answer => {
 
   }
 
-  console.log("Adding after response: jobUID", jobUID);
-  console.log("Adding after response: studentResponse", studentResponse);
-  console.log("Adding after response: studentUserUID", studentUserUID);
+  const responsesUpdated =[
+    ...currentResponses,
+    {
+      studentUserUID:studentUserUID,
+      studentResponse: studentResponse
+    }
+   
+  ]
 
-  setTimeout(() => this.props.firebase.responses().add({
-    jobUID,
-    studentResponse,
-    studentUserUID
-  }).then(ref => {
-    ref.set({ docID: ref.id }, { merge: true })
+
+  setTimeout(() => this.props.firebase.job(jobUID).update({
+    responses: responsesUpdated
   }), 500);
 
 }
