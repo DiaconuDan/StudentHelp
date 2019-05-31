@@ -43,7 +43,7 @@ class AddJob extends Component {
     const companyFullname = authUser.fullName;
     const startDate = moment(date + " "+startHour).format('YYYY-MM-DD HH:mm');
     const endDate = moment(date + " "+endHour).format('YYYY-MM-DD HH:mm');
-
+    const responses = [] ;
     this.props.firebase.jobs().add({
       companyUserUID,
       companyFullname,
@@ -51,7 +51,8 @@ class AddJob extends Component {
       hourlyPayment,
       startDate,
       endDate,
-      studentsNumber
+      studentsNumber,
+      responses
     }).then(ref => {
       ref.set({ docID: ref.id }, { merge: true }) });
 

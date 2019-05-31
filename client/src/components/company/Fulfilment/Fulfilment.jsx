@@ -32,29 +32,13 @@ class Fulfilment extends Component {
       .where('companyUserUID', '==', currentCompanyUID) // ma duc in joburile companiei
       .onSnapshot(jobsSnapshot => {
         let jobs = [];
-
         jobsSnapshot.forEach(jobDoc => {
-          this.props.firebase
-            .responses()
-            .where('jobUID', '==', jobDoc.id)
-            .where('studentResponse', '==', true)
-            .onSnapshot(responsesSnapshot => { // iau toti studentii care au dat going la job din colectia responses
-
-              let studentsEnrolledInJob = [];
-
-              responsesSnapshot.forEach(response => {
-                studentsEnrolledInJob.push(response.data().studentUserUID);
-              });
-
-              jobs.push({ ...jobDoc.data(), studentsEnrolledInJob });
-              this.setState({
-                jobs,
-                loading: false,
-              });
-            });
-
+          jobs.push({ ...jobDoc.data() });
+          this.setState({
+            jobs,
+            loading: false,
+          });
         });
-
       });
   }
 

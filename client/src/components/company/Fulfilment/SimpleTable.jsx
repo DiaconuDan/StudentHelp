@@ -25,12 +25,12 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(status, startDate, endDate, location, studentsEnrolled, hourlyPayment) {
+function createData(status, startDate, endDate, location, responsesNumber, hourlyPayment) {
   id += 1;
-  return { id, status, startDate, endDate,location,  studentsEnrolled, hourlyPayment };
+  return { id, status, startDate, endDate,location,  responsesNumber, hourlyPayment };
 }
 
-// job : { studentsEnrolled: { UIDS}, }
+
 
 const getStatus = ( jobStartDate, jobEndDate) => {
 
@@ -54,7 +54,7 @@ const generateRows = ( jobs ) => {
   let rows = [] ;
   jobs.forEach( job => {
     const status = getStatus( job.startDate, job.endDate) ;
-    rows.push(createData(status, job.startDate, job.endDate, job.location, job.studentsEnrolledInJob.length + "/" + job.studentsNumber, job.hourlyPayment));
+    rows.push(createData(status, job.startDate, job.endDate, job.location, job.responses.length + "/" + job.studentsNumber, job.hourlyPayment));
   })
   return rows ;
 }
@@ -86,7 +86,7 @@ const  SimpleTable = (props) => {
               <TableCell align="right">{row.startDate}</TableCell>
               <TableCell align="right">{row.endDate}</TableCell>
               <TableCell align="right">{row.location}</TableCell>
-              <TableCell align="right">{row.studentsEnrolled}</TableCell>
+              <TableCell align="right">{row.responsesNumber}</TableCell>
               <TableCell align="right">{row.hourlyPayment}</TableCell>
             </TableRow>
           ))}
