@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const ACCEPT_ANSWER = "right";
 const REJECT_ANSWER = "left";
-const authUser = JSON.parse(localStorage.getItem("authUser"));
+
 
 
 const wrapperStyles = { marginTop: "100px", position: "relative", width: "250px", height: "250px", marginLeft: "30%" };
@@ -46,13 +46,12 @@ class Swiper extends Component {
           const job = jobDoc.data();
          
           job.responses.forEach(response => {
-            console.log(response);
-            console.log(authUser.uid);
+            const authUser = this.props.authUser ;
             if (response.studentUserUID === authUser.uid) {
               userAlreadyResponded = true;
             }
           })
-          if ( !userAlreadyResponded && job.startDate > currentDate ) {
+          if ( !userAlreadyResponded && job.startDate > currentDate && job.responses.length < job.studentsNumber) {
             jobs.push(job);
           }
         });
@@ -71,7 +70,7 @@ onAnswer = answer => {
 
 
   const { jobs } = this.state;
-
+  const authUser = this.props.authUser ;
   const studentUserUID = authUser.uid;
   const jobUID = jobs[0].docID;
   const currentResponses = jobs[0].responses ; 

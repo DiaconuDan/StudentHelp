@@ -31,7 +31,6 @@ function createData(status, startDate, endDate, location, responsesNumber, hourl
 }
 
 
-
 const getStatus = ( jobStartDate, jobEndDate) => {
 
 

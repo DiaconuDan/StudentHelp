@@ -1,12 +1,19 @@
 import React from 'react';
 import { compose } from "recompose";
 import { withFirebase } from "../../general/Firebase" ;
-import { withAuthorization } from '../../general/Session';
+import { withAuthorization,AuthUserContext } from '../../general/Session';
 import Swiper from './Swiper' ;
+
+
 
 const SearchJobs = () => (
   <div>
-   <Swiper />
+    <AuthUserContext.Consumer>
+      {authUser =>
+        authUser && <Swiper authUser={authUser} /> 
+      }
+    </AuthUserContext.Consumer>
+  
   </div>
 );
 

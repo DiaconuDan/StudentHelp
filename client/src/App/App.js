@@ -10,7 +10,7 @@ import StudentProfile from '../components/student/Profile/Profile' ;
 import Overview from '../components/student/Overview/Overview' ;
 import SearchJobs from '../components/student/SearchJobs/SearchJobs' ;
 import AddJob from '../components/company/AddJob/AddJob' ;
-import Fulfilment from '../components/company/Fulfilment/Fulfilment' ;
+import FulfilmentPage from '../components/company/Fulfilment/index' ;
 import * as ROUTES from '../constants/routes';
 import { withAuthentication } from '../components/general/Session/index';
 
@@ -24,7 +24,7 @@ const App = () => (
           <Route path={ROUTES.SIGN_IN} component={SignIn} />
           <Route path={ROUTES.COMPANY_PROFILE} component={CompanyProfile} />
           <Route path={ROUTES.COMPANY_ADD_JOB} component={AddJob} />
-          <Route path={ROUTES.COMPANY_FULFILMENT} component={Fulfilment} />
+          <Route path={ROUTES.COMPANY_FULFILMENT} component={FulfilmentPage} />
           <Route path={ROUTES.STUDENT_PROFILE} component={StudentProfile} />
           <Route path={ROUTES.STUDENT_SEARCH_JOBS} component={SearchJobs} />
           <Route path={ROUTES.STUDENT_OVERVIEW} component={Overview} />

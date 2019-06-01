@@ -12,13 +12,17 @@ import SimpleTable from "./SimpleTable";
 
 let currentCompanyUser = JSON.parse(localStorage.getItem('authUser'));
 
+
 class Fulfilment extends Component {
   constructor(props) {
     super(props);
-
+    
+     const authUser = this.props.authUser ; 
+     console.log(authUser);
     this.state = {
       loading: true,
       jobs: [],
+      authUser: authUser
     };
   }
 
@@ -26,6 +30,8 @@ class Fulfilment extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
+    const { authUser} = this.state ;
+    console.log(authUser);
     const currentCompanyUID = currentCompanyUser.uid;
     this.props.firebase
       .jobs()
@@ -35,6 +41,7 @@ class Fulfilment extends Component {
         jobsSnapshot.forEach(jobDoc => {
           jobs.push({ ...jobDoc.data() });
         });
+        console.log(jobs);
         this.setState({
           jobs,
           loading: false,
