@@ -5,7 +5,7 @@ import List from '../pages/List';
 import Navigation from '../components/general/Navigation/Navigation';
 import { SignUp } from '../components/general/SignUp/SignUp' ;
 import { SignIn } from '../components/general/SignIn/SignIn' ;
-import CompanyProfile from '../components/company/Profile/Profile';
+import CompanyProfilePage from '../components/company/Profile/index';
 import StudentProfile from '../components/student/Profile/Profile' ;
 import Overview from '../components/student/Overview/Overview' ;
 import SearchJobs from '../components/student/SearchJobs/SearchJobs' ;
@@ -22,7 +22,7 @@ const App = () => (
           <Route path={ROUTES.LIST} component={List}/>
           <Route path={ROUTES.SIGN_UP} component={SignUp} />
           <Route path={ROUTES.SIGN_IN} component={SignIn} />
-          <Route path={ROUTES.COMPANY_PROFILE} component={CompanyProfile} />
+          <Route path={ROUTES.COMPANY_PROFILE} component={CompanyProfilePage} />
           <Route path={ROUTES.COMPANY_ADD_JOB} component={AddJob} />
           <Route path={ROUTES.COMPANY_FULFILMENT} component={FulfilmentPage} />
           <Route path={ROUTES.STUDENT_PROFILE} component={StudentProfile} />

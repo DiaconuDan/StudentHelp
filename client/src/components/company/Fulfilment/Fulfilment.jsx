@@ -16,9 +16,7 @@ let currentCompanyUser = JSON.parse(localStorage.getItem('authUser'));
 class Fulfilment extends Component {
   constructor(props) {
     super(props);
-    
-     const authUser = this.props.authUser ; 
-     console.log(authUser);
+    const authUser = this.props.authUser ; 
     this.state = {
       loading: true,
       jobs: [],
