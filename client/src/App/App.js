@@ -6,7 +6,7 @@ import Navigation from '../components/general/Navigation/Navigation';
 import { SignUp } from '../components/general/SignUp/SignUp' ;
 import { SignIn } from '../components/general/SignIn/SignIn' ;
 import CompanyProfilePage from '../components/company/Profile/index';
-import StudentProfile from '../components/student/Profile/Profile' ;
+import StudentProfilePage from '../components/student/Profile/index' ;
 import Overview from '../components/student/Overview/Overview' ;
 import SearchJobs from '../components/student/SearchJobs/SearchJobs' ;
 import AddJob from '../components/company/AddJob/AddJob' ;
@@ -25,7 +25,7 @@ const App = () => (
           <Route path={ROUTES.COMPANY_PROFILE} component={CompanyProfilePage} />
           <Route path={ROUTES.COMPANY_ADD_JOB} component={AddJob} />
           <Route path={ROUTES.COMPANY_FULFILMENT} component={FulfilmentPage} />
-          <Route path={ROUTES.STUDENT_PROFILE} component={StudentProfile} />
+          <Route path={ROUTES.STUDENT_PROFILE} component={StudentProfilePage} />
           <Route path={ROUTES.STUDENT_SEARCH_JOBS} component={SearchJobs} />
           <Route path={ROUTES.STUDENT_OVERVIEW} component={Overview} />
         </Switch>

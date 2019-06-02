@@ -9,8 +9,6 @@ import moment from 'moment';
 const ACCEPT_ANSWER = "right";
 const REJECT_ANSWER = "left";
 
-
-
 const wrapperStyles = { marginTop: "100px", position: "relative", width: "250px", height: "250px", marginLeft: "30%" };
 const actionsStyles = {
   display: "flex",

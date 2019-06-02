@@ -2,7 +2,9 @@ import { compose } from "recompose";
 import React, { Component } from "react";
 import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
-import styled from "styled-components" ;
+import styled from "styled-components";
+import {Ban} from "styled-icons/fa-solid/Ban";
+
 import {
   Wrapper,
   Email,
@@ -18,48 +20,61 @@ const Label = styled.label`
 
 
 class CompanyProfile extends Component {
-  
+
   constructor(props) {
     super(props);
     const authUser = this.props.authUser;
-    
+
     this.props.firebase.user(authUser.uid)
-    .get()
-    .then(snapshot => {
-      const dbUser = snapshot.data();
-      console.log({...dbUser});
-      // merge auth and db user
-      this.setState({...dbUser});
-      console.log(this.state);
-    });
-  
+      .get()
+      .then(snapshot => {
+        const dbUser = snapshot.data();
+        console.log({ ...dbUser });
+        // merge auth and db user
+        this.setState({ ...dbUser });
+        console.log(this.state);
+      });
+
   }
 
   onSubmit = event => {
+    const {
+      fullName,
+      location,
+      phoneNumber
+    } = this.state;
+    const authUser = this.props.authUser;
+    this.props.firebase.user(authUser.uid).update({
+      location: location,
+      phoneNumber: phoneNumber,
+      fullName: fullName
+    }) ;
     
   };
 
-  onTodoChange(name,value){
+  onTodoChange(name, value) {
     this.setState({
-         [name]: value
+      [name]: value
     });
-}
+  }
 
   render() {
-   if ( !this.state ) {
-    return ( <div style={{marginLeft:200}}> Loading..</div>)
-   }
+    if (!this.state) {
+      return (<div style={{ marginLeft: 200 }}> Loading..</div>)
+    }
 
     const {
       fullName,
       email,
-      role
+      role,
+      location,
+      phoneNumber
     } = this.state;
 
-  
+
 
     return (
-      <Wrapper style={{ marginLeft: 150 }}>
+      <Wrapper style={{ marginLeft: 10 }}>
         <div>
           <Box>
             <h1> Edit profile</h1>
@@ -67,42 +82,42 @@ class CompanyProfile extends Component {
 
             <form onSubmit={this.onSubmit.bind(this)}>
 
-            <Label  style={{ float: 'left', marginTop: 10,  marginLeft: 20}}>Email* </Label>
-            <Email
+              <Label style={{ float: 'left', marginTop: 10, marginLeft: 20 }}>Email <Ban style={{width: 20}}/> </Label>
+              <Email
                 type="text"
                 disabled
                 value={email}
               />
-                <Label  style={{ float: 'left', marginTop: 10,  marginLeft: 20}}>Role* </Label>
-           
+              <Label style={{ float: 'left', marginTop: 10, marginLeft: 20 }}>Role <Ban style={{width: 20}} /> </Label>
+
               <Email
                 type="text"
                 value={role}
                 disabled
               />
-              <Label  style={{ float: 'left', marginTop: 10,  marginLeft: 20}}> Company name </Label>
-             <Email
+              <Label style={{ float: 'left', marginTop: 10, marginLeft: 20 }}> Company name </Label>
+              <Email
                 type="text"
-                value={fullName} 
-                onChange={e =>this.onTodoChange("fullName", e.target.value )}
-              />
-          
-
-          <Label  style={{ float: 'left', marginTop: 10,  marginLeft: 20}}> Location </Label>
-             <Email
-                type="text"
-                value={fullName} 
-                onChange={e =>this.onTodoChange("fullName", e.target.value )}
+                value={fullName}
+                onChange={e => this.onTodoChange("fullName", e.target.value)}
               />
 
 
-<Label  style={{ float: 'left', marginTop: 10,  marginLeft: 20}}> Phone Number </Label>
-             <Email
+              <Label style={{ float: 'left', marginTop: 10, marginLeft: 20 }}> Location </Label>
+              <Email
                 type="text"
-                value={fullName} 
-                onChange={e =>this.onTodoChange("fullName", e.target.value )}
+                value={location}
+                onChange={e => this.onTodoChange("location", e.target.value)}
               />
-          
+
+
+              <Label style={{ float: 'left', marginTop: 10, marginLeft: 20 }}> Phone Number </Label>
+              <Email
+                type="number"
+                value={phoneNumber}
+                onChange={e => this.onTodoChange("phoneNumber", e.target.value)}
+              />
+
 
 
 
