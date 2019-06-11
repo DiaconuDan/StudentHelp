@@ -12,22 +12,25 @@ import SimpleTable from "./SimpleTable";
 
 
 
+
+
 class Overview extends Component {
   constructor(props) {
     super(props);
-    const authUser = this.props.authUser ; 
+    const authUser = this.props.authUser;
     this.state = {
       loading: true,
       studentJobResponses: [],
       authUser: authUser
     };
+
   }
 
 
 
   componentDidMount() {
     this.setState({ loading: true });
-    const { authUser} = this.state ;
+    const { authUser } = this.state;
 
     this.props.firebase
       .jobs()
@@ -37,15 +40,15 @@ class Overview extends Component {
           let alreadyResponded = false;
           let job = jobDoc.data();
           const responses = job.responses;
-       
+
           responses.forEach(response => {
-            if ( response.studentUserUID === authUser.uid) {
-              alreadyResponded = true ;
-              job = { ...job, studentResponse: response.studentResponse} ;
+            if (response.studentUserUID === authUser.uid) {
+              alreadyResponded = true;
+              job = { ...job, studentResponse: response.studentResponse };
             }
           })
-          if ( alreadyResponded ) {
-            jobs.push(job) ;
+          if (alreadyResponded) {
+            jobs.push(job);
           }
         });
         this.setState({
@@ -53,12 +56,12 @@ class Overview extends Component {
           loading: false,
         });
       });
-   
+
   }
 
   render() {
     const { studentJobResponses, loading } = this.state;
-  
+
     if (loading) {
       return <h1 style={{ textAlign: "center" }}>Loading ...</h1>;
     } else {
@@ -68,6 +71,8 @@ class Overview extends Component {
             Overview
         </h1>
           <SimpleTable jobs={studentJobResponses} />
+          
+        
         </div>
       );
     }
