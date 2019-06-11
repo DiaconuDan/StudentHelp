@@ -9,8 +9,7 @@ import {
   Wrapper,
   Email,
   Button,
-  Box,
-  Error
+  Box
 } from "../../general/SignIn/SignIn";
 
 const Label = styled.label`
