@@ -122,7 +122,8 @@ render() {
               onSwipe={this.onAnswer}
               onAfterSwipe={this.remove}
             >
-              <Card>{jobs[0].location}</Card>
+              <Card> Location : {jobs[0].location} ; <br /> Company: {jobs[0].companyFullname} <br />  StartDate: {jobs[0].startDate} <br />  EndDate: {jobs[0].endDate} <br />  Hourly Payment: {jobs[0].hourlyPayment}</Card>
+              
             </Swipeable>
             {jobs.length > 1 && <Card zIndex={-1}>{jobs[1].location}</Card>}
           </div>
