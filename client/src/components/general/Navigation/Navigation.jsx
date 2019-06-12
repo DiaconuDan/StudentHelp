@@ -58,9 +58,9 @@ const NavigationCompanyAuth = () => (
         </NavText>
       </NavItem>
     
-      <NavItem eventKey="signOut" navitemStyle={{ marginTop: 350, marginLeft: 15 }}>
+      <NavItem eventKey="signOut" navitemStyle={{  marginTop: 10 }}>
         <NavText>
-          <SignOutButton />
+        <SignOutButton /> 
         </NavText>
       </NavItem>
     </SideNavigation.Nav>
@@ -85,7 +85,7 @@ const NavigationStudentAuth = () => (
           <Link to={ROUTES.STUDENT_PROFILE} style={{ textDecoration: 'none' }}> <LogInIcon /> Profile </Link>
         </NavText>
       </NavItem>
-      <NavItem eventKey="signUp" navitemStyle={{ marginTop: 450, marginLeft: 10 }}>
+      <NavItem eventKey="signOut" navitemStyle={{  marginTop: 20 }}>
         <NavText>
           <SignOutButton />
         </NavText>
