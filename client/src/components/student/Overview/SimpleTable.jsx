@@ -7,182 +7,37 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import moment from "moment";
 import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import styled from "styled-components";
-
-// TO DO : ending hour => end hour
-// sortari
 import { Wrapper, Email, Box } from "../../general/SignIn/SignIn";
-export const Select = styled.select`
-  background: #ecf0f1;
-  border: #ccc 1px solid;
-  border-bottom: #ccc 2px solid;
-  padding: 8px;
-  width: 267px;
-  height: px;
-  margin-top: 10px;
-  font-size: 1em;
-  border-radius: 4px;
-`;
+import { DialogTitle, DialogActions, DialogContent, styles } from './styles';
+import StarRatingComponent from 'react-star-rating-component';
+import { generateRows } from './utils';
+import { WindowClose } from 'styled-icons/fa-regular/WindowClose';
+import { EyeClosed } from 'styled-icons/octicons/EyeClosed';
+import classNames from 'classnames';
+import { CheckCircle } from 'styled-icons/boxicons-regular/CheckCircle';
 
-const DialogTitle = withStyles(theme => ({
-  root: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    margin: 0,
-    padding: theme.spacing.unit * 2
-  },
-  closeButton: {
-    position: "absolute",
-    right: theme.spacing.unit,
-    top: theme.spacing.unit,
-    color: theme.palette.grey[500]
-  }
-}))(props => {
-  const { children, classes, onClose } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="Close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
-
-const styles = theme => ({
-  root: {
-    marginLeft: 350,
-    width: "60%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 700
-  },
-  fab: {
-    margin: theme.spacing.unit
-  },
-  extendedIcon: {
-    marginRight: theme.spacing.unit
-  },
-  button: {
-    margin: theme.spacing.unit,
-    textTransform: "none",
-    marginLeft: 0
-  },
-  input: {
-    display: "none"
-  }
-});
-
-const DialogContent = withStyles(theme => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing.unit * 2
-  }
-}))(MuiDialogContent);
-
-const DialogActions = withStyles(theme => ({
-  root: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-    margin: 0,
-    padding: theme.spacing.unit
-  }
-}))(MuiDialogActions);
-
-let id = 0;
-function createData(
-  status,
-  studentResponse,
-  startDate,
-  endDate,
-  location,
-  responsesNumber,
-  hourlyPayment
-) {
-  id += 1;
-  return {
-    id,
-    status,
-    studentResponse,
-    startDate,
-    endDate,
-    location,
-    responsesNumber,
-    hourlyPayment
-  };
-}
-
-const getStatus = (jobStartDate, jobEndDate) => {
-  const currentDate = moment().format("YYYY-MM-DD HH:mm");
-
-  if (jobStartDate > currentDate) {
-    return "Upcoming";
-  }
-  if (jobEndDate < currentDate) {
-    return "Finished";
-  }
-  if (currentDate >= jobStartDate && currentDate <= jobEndDate) {
-    return "Running";
-  }
-};
-
-const generateRows = jobs => {
-  let rows = [];
-
-  jobs.forEach(job => {
-    console.log(jobs);
-    const status = getStatus(job.startDate, job.endDate);
-    let studentResponse;
-    if (job.studentResponse === true) {
-      studentResponse = "Yes";
-    } else {
-      studentResponse = "No";
-    }
-    rows.push(
-      createData(
-        status,
-        studentResponse,
-        moment(job.startDate).format("DD-MM-YYYY HH:mm"),
-        moment(job.endDate).format("DD-MM-YYYY HH:mm"),
-        job.location,
-        job.responses.length + "/" + job.studentsNumber,
-        job.hourlyPayment
-      )
-    );
-  });
-  return rows;
-};
-const inline = {
-  marginLeft: 40
-};
 class SimpleTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, currentRow: undefined };
+    this.state = { open: false, editRow: null, rating: 1 };
   }
 
-  handleClickOpen = () => {
+  onStarClick(nextValue, prevValue, name) {
+    this.setState({ rating: nextValue });
+  }
+
+  handleClickOpen = row => event => {
+
     this.setState({
-      open: true
+      open: true,
+      editRow: {
+        ...row
+      }
     });
   };
 
@@ -192,50 +47,80 @@ class SimpleTable extends Component {
 
   render() {
     const { classes, jobs } = this.props;
+    const { rating } = this.state;
     const rows = generateRows(jobs);
-
+    let companyName;
+    if (this.state.editRow) {
+      companyName = this.state.editRow.companyFullname;
+    }
+    else {
+      companyName = "Company";
+    }
     return (
       <React.Fragment>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
+        <Paper className={classes.root} >
+          <Table className={classes.table} >
             <TableHead>
               <TableRow>
-                <TableCell style={inline}>Status</TableCell>
-                <TableCell align="center">Answer</TableCell>
-                <TableCell align="right">StartDate</TableCell>
-                <TableCell align="right">EndDate</TableCell>
-                <TableCell align="right">Location</TableCell>
+                <TableCell align="center">Status</TableCell>
+                <TableCell align="left">Answer</TableCell>
+                <TableCell align="left">Company</TableCell>
+                <TableCell align="left">StartDate</TableCell>
+                <TableCell align="left">EndDate</TableCell>
+                <TableCell align="left">Location</TableCell>
                 <TableCell align="center">Payment per hour</TableCell>
-                <TableCell align="center">Edit</TableCell>
+                <TableCell align="center">Add rating</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map(row => (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    <Button
+                    { row.status === "Finished" && <Button
                       variant="contained"
                       color="primary"
                       className={classes.button}
+                    >  {row.status} </Button> }
+                     { row.status === "Upcoming" &&  <Button
+                      variant="contained"
+                      color="primary"
+                      className={classNames(classes.margin, classes.cssRoot, classes.button)}
                     >
-                      {row.status}
-                    </Button>
+                     {row.status} </Button> }
+                   
+
+                    
+                   
                   </TableCell>
-                  <TableCell align="right">{row.studentResponse}</TableCell>
-                  <TableCell align="right">{row.startDate}</TableCell>
-                  <TableCell align="right">{row.endDate}</TableCell>
-                  <TableCell align="right">{row.location}</TableCell>
+                  <TableCell align="left">{row.studentResponse === "Yes" && <CheckCircle />}{row.studentResponse === "No" && <WindowClose />}</TableCell>
+                  <TableCell align="left">{row.companyFullname}</TableCell>
+                  <TableCell align="left">{row.startDate}</TableCell>
+                  <TableCell align="left">{row.endDate}</TableCell>
+                  <TableCell align="left">{row.location}</TableCell>
                   <TableCell align="center">{row.hourlyPayment}</TableCell>
                   <TableCell align="center">
-                    <Fab
+                  { row.status === "Finished" && 
+                    (<Fab
                       color="primary"
                       aria-label="Edit"
                       className={classes.fab}
                       style={{ width: 40, height: 40 }}
-                      onClick={this.handleClickOpen}
+                      onClick={this.handleClickOpen(row)}
+                   
                     >
                       <EditIcon />
-                    </Fab>
+                    </Fab>) }
+                    { row.status === "Upcoming" && 
+                   (<Fab
+                    color="primary"
+                    aria-label="Edit"
+                    className={classes.fab}
+                    style={{ width: 40, height: 40 }}
+                    onClick={this.handleClickOpen(row)}
+                    disabled
+                  >
+                    <EditIcon />
+                  </Fab>)  }
                   </TableCell>
                 </TableRow>
               ))}
@@ -249,76 +134,35 @@ class SimpleTable extends Component {
           style={{ marginTop: -150 }}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            Edit job details
+            Rate this job from  {companyName}
           </DialogTitle>
           <DialogContent>
             <Wrapper style={{ marginTop: -10 }}>
               <Typography gutterBottom>
-                <div>
-                  <Box>
-                    <h1>Add Job</h1>
-                    <form>
-                      <Email
-                        name="location"
-                        type="text"
-                        placeholder="Location"
-                        required
-                      />
-                      <Email
-                        name="studentsNumber"
-                        type="number"
-                        placeholder="Number of students needed"
-                        required
-                      />
-                      <Email
-                        name="hourlyPayment"
-                        type="number"
-                        placeholder="Payment per hour in RON"
-                        required
-                      />
-                      <Email
-                        name="date"
-                        type="text"
-                        placeholder="Date"
-                        onFocus={e => (e.target.type = "date")}
-                        required
-                      />
-                      <Email
-                        name="startHour"
-                        type="text"
-                        placeholder="Starting hour"
-                        onFocus={e => (e.target.type = "time")}
-                        required
-                      />
-                      <Email
-                        name="endHour"
-                        type="text"
-                        placeholder="Ending hour"
-                        onFocus={e => (e.target.type = "time")}
-                        required
-                      />
+                <Box>
+                  <form>
+                    <h4 style={{ marginLeft: -210 }}>  Rating </h4>
+                    <div style={{ fontSize: 30 }}>
+                      <StarRatingComponent
 
-                      <Select>
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="audi">Audi</option>
-                      </Select>
-                    </form>
-                  </Box>
-                </div>
+                        name="rate1"
+                        starCount={10}
+                        value={rating}
+                        onStarClick={this.onStarClick.bind(this)}
+                      />
+                    </div>
+                    <h4 style={{ marginLeft: -190 }}> Feedback </h4>
+                    <Email
+                      style={{ marginLeft: 12 }}
+                      name="rating"
+                      type="text"
+                      placeholder="Leave your opinion on this offer"
+                      required
+                    />
+                  </form>
+                </Box>
               </Typography>
             </Wrapper>
-            {/* <Typography gutterBottom>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur
-              et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-              auctor.
-            </Typography>
-            <Typography gutterBottom>
-              Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-              cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-              dui. Donec ullamcorper nulla non metus auctor fringilla.
-            </Typography> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">

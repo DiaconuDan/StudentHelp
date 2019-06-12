@@ -4,15 +4,6 @@ import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
 import SimpleTable from "./SimpleTable";
 
-// vreau sa caut in Jobs toate job-urile cu companyUserId egal cu curentul authUser
-// le pun in tabel
-// daca Date.now ( cu tot cu ora) >= endHour -> FINISHEEEED ( pot da review)
-// daca Date.now ( cu tot cu ora) < startHour -> UPCOMING
-// daca Date.now ( cu tot cu ora) >= startHour && <= endHour -> RUNNING
-
-
-
-
 
 class Overview extends Component {
   constructor(props) {
@@ -23,11 +14,7 @@ class Overview extends Component {
       studentJobResponses: [],
       authUser: authUser
     };
-
   }
-
-
-
   componentDidMount() {
     this.setState({ loading: true });
     const { authUser } = this.state;
@@ -71,8 +58,8 @@ class Overview extends Component {
             Overview
         </h1>
           <SimpleTable jobs={studentJobResponses} />
-          
-        
+
+
         </div>
       );
     }
