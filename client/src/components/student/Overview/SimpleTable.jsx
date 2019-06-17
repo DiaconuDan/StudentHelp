@@ -20,11 +20,13 @@ import { WindowClose } from 'styled-icons/fa-regular/WindowClose';
 import { EyeClosed } from 'styled-icons/octicons/EyeClosed';
 import classNames from 'classnames';
 import { CheckCircle } from 'styled-icons/boxicons-regular/CheckCircle';
+import AddReview from './AddReview';
 
 class SimpleTable extends Component {
   constructor(props) {
     super(props);
-    this.state = { open: false, editRow: null, rating: 1 };
+    this.handleClose = this.handleClose.bind(this);
+    this.state = { open: false, editRow: null };
   }
 
   onStarClick(nextValue, prevValue, name) {
@@ -47,7 +49,7 @@ class SimpleTable extends Component {
 
   render() {
     const { classes, jobs } = this.props;
-    const { rating } = this.state;
+
     const rows = generateRows(jobs);
     let companyName;
     if (this.state.editRow) {
@@ -76,21 +78,18 @@ class SimpleTable extends Component {
               {rows.map(row => (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    { row.status === "Finished" && <Button
+                    {row.status === "Finished" && <Button
                       variant="contained"
                       color="primary"
                       className={classes.button}
-                    >  {row.status} </Button> }
-                     { row.status === "Upcoming" &&  <Button
+                    >  {row.status} </Button>}
+                    {row.status === "Upcoming" && <Button
                       variant="contained"
                       color="primary"
                       className={classNames(classes.margin, classes.cssRoot, classes.button)}
                     >
-                     {row.status} </Button> }
-                   
+                      {row.status} </Button>}
 
-                    
-                   
                   </TableCell>
                   <TableCell align="left">{row.studentResponse === "Yes" && <CheckCircle />}{row.studentResponse === "No" && <WindowClose />}</TableCell>
                   <TableCell align="left">{row.companyFullname}</TableCell>
@@ -99,35 +98,36 @@ class SimpleTable extends Component {
                   <TableCell align="left">{row.location}</TableCell>
                   <TableCell align="center">{row.hourlyPayment}</TableCell>
                   <TableCell align="center">
-                  { row.status === "Finished" && 
-                    (<Fab
-                      color="primary"
-                      aria-label="Edit"
-                      className={classes.fab}
-                      style={{ width: 40, height: 40 }}
-                      onClick={this.handleClickOpen(row)}
-                   
-                    >
-                      <EditIcon />
-                    </Fab>) }
-                    { row.status === "Upcoming" && 
-                   (<Fab
-                    color="primary"
-                    aria-label="Edit"
-                    className={classes.fab}
-                    style={{ width: 40, height: 40 }}
-                    onClick={this.handleClickOpen(row)}
-                    disabled
-                  >
-                    <EditIcon />
-                  </Fab>)  }
+                    {row.status === "Finished" &&
+                      (<Fab
+                        color="primary"
+                        aria-label="Edit"
+                        className={classes.fab}
+                        style={{ width: 40, height: 40 }}
+                        onClick={this.handleClickOpen(row)}
+
+                      >
+                        <EditIcon />
+                      </Fab>)}
+                    {row.status === "Upcoming" &&
+                      (<Fab
+                        color="primary"
+                        aria-label="Edit"
+                        className={classes.fab}
+                        style={{ width: 40, height: 40 }}
+                        onClick={this.handleClickOpen(row)}
+                        disabled
+                      >
+                        <EditIcon />
+                      </Fab>)}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </Paper>
-        <Dialog
+        {this.state.open && <AddReview handleClose={this.handleClose} companyName={companyName} />}
+        {/* { this.state.open && (  <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
@@ -144,8 +144,7 @@ class SimpleTable extends Component {
                     <h4 style={{ marginLeft: -210 }}>  Rating </h4>
                     <div style={{ fontSize: 30 }}>
                       <StarRatingComponent
-
-                        name="rate1"
+                        name="rating"
                         starCount={10}
                         value={rating}
                         onStarClick={this.onStarClick.bind(this)}
@@ -169,7 +168,8 @@ class SimpleTable extends Component {
               Save changes
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog>)} */}
+
       </React.Fragment>
     );
   }
