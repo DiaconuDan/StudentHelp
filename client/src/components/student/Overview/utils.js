@@ -20,7 +20,9 @@ export const generateRows = jobs => {
         job.location,
         job.responses.length + "/" + job.studentsNumber,
         job.hourlyPayment,
-        job.companyFullname
+        job.companyFullname,
+        job.docID,
+        job.responses
       )
     );
   });
@@ -50,7 +52,9 @@ export function createData(
   location,
   responsesNumber,
   hourlyPayment,
-  companyFullname
+  companyFullname,
+  docID,
+  responses
 ) {
   id += 1;
   return {
@@ -62,6 +66,8 @@ export function createData(
     location,
     responsesNumber,
     hourlyPayment,
-    companyFullname
+    companyFullname,
+    docID,
+    responses
   };
 }

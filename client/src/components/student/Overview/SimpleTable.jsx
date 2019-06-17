@@ -44,6 +44,9 @@ class SimpleTable extends Component {
   };
 
   handleClose = () => {
+
+
+    console.log("intrat");
     this.setState({ open: false });
   };
 
@@ -125,8 +128,10 @@ class SimpleTable extends Component {
               ))}
             </TableBody>
           </Table>
+          
+          { this.state.editRow != null && <AddReview open={this.state.open} handleClose={this.handleClose} companyName={companyName} activeRow={this.state.editRow} rating={this.state.editRow.rating} feedback={this.state.editRow.feedback} authUserUID = {this.props.authUser.uid} firebase={this.props.firebase}/>}
         </Paper>
-        {this.state.open && <AddReview handleClose={this.handleClose} companyName={companyName} />}
+      
         {/* { this.state.open && (  <Dialog
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"

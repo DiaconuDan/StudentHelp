@@ -57,7 +57,7 @@ class Overview extends Component {
           <h1 style={{ textAlign: "center" }}>
             Overview
         </h1>
-          <SimpleTable jobs={studentJobResponses} />
+          <SimpleTable jobs={studentJobResponses} authUser={this.props.authUser} firebase={this.props.firebase} />
 
 
         </div>
