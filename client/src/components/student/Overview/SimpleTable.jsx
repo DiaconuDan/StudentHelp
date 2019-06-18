@@ -10,44 +10,48 @@ import Paper from "@material-ui/core/Paper";
 import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import Typography from "@material-ui/core/Typography";
-import { Wrapper, Email, Box } from "../../general/SignIn/SignIn";
-import { DialogTitle, DialogActions, DialogContent, styles } from './styles';
-import StarRatingComponent from 'react-star-rating-component';
+import {  styles } from './styles';
 import { generateRows } from './utils';
 import { WindowClose } from 'styled-icons/fa-regular/WindowClose';
-import { EyeClosed } from 'styled-icons/octicons/EyeClosed';
 import classNames from 'classnames';
 import { CheckCircle } from 'styled-icons/boxicons-regular/CheckCircle';
-import AddReview from './AddReview';
+import AddReview from './modals/AddReview';
+import CompanyStatistics from './modals/CompanyStatistics';
 
 class SimpleTable extends Component {
   constructor(props) {
     super(props);
-    this.handleClose = this.handleClose.bind(this);
-    this.state = { open: false, editRow: null };
+    this.handleAddJobRatingClose = this.handleAddJobRatingClose.bind(this);
+    this.state = { openAddJobRating: false, openCompanyStatistics: false, activeRow: null};
   }
 
-  onStarClick(nextValue, prevValue, name) {
-    this.setState({ rating: nextValue });
-  }
 
-  handleClickOpen = row => event => {
+  handleClickOpenAddJobRating = row => event => {
 
     this.setState({
-      open: true,
-      editRow: {
+      openAddJobRating: true,
+      activeRow: {
         ...row
       }
     });
   };
 
-  handleClose = () => {
+  handleAddJobRatingClose = () => {
+    this.setState({ openAddJobRating: false });
+  };
 
+  handleClickOpenCompanyStatistics = row => event => {
+    console.log('intrat') ;
+    this.setState({
+      openCompanyStatistics: true,
+      activeRow: {
+        ...row
+      }
+    });
+  };
 
-    console.log("intrat");
-    this.setState({ open: false });
+  handleCompanyStatisticsClose = () => {
+    this.setState({ openCompanyStatistics: false });
   };
 
   render() {
@@ -55,8 +59,8 @@ class SimpleTable extends Component {
 
     const rows = generateRows(jobs);
     let companyName;
-    if (this.state.editRow) {
-      companyName = this.state.editRow.companyFullname;
+    if (this.state.activeRow) {
+      companyName = this.state.activeRow.companyFullname;
     }
     else {
       companyName = "Company";
@@ -95,7 +99,7 @@ class SimpleTable extends Component {
 
                   </TableCell>
                   <TableCell align="left">{row.studentResponse === "Yes" && <CheckCircle />}{row.studentResponse === "No" && <WindowClose />}</TableCell>
-                  <TableCell align="left">{row.companyFullname}</TableCell>
+                  <TableCell align="left"> <p  style={{cursor: "pointer"}}   onClick={this.handleClickOpenCompanyStatistics(row)} > {row.companyFullname}</p ></TableCell>
                   <TableCell align="left">{row.startDate}</TableCell>
                   <TableCell align="left">{row.endDate}</TableCell>
                   <TableCell align="left">{row.location}</TableCell>
@@ -107,7 +111,7 @@ class SimpleTable extends Component {
                         aria-label="Edit"
                         className={classes.fab}
                         style={{ width: 40, height: 40 }}
-                        onClick={this.handleClickOpen(row)}
+                        onClick={this.handleClickOpenAddJobRating(row)}
 
                       >
                         <EditIcon />
@@ -118,7 +122,7 @@ class SimpleTable extends Component {
                         aria-label="Edit"
                         className={classes.fab}
                         style={{ width: 40, height: 40 }}
-                        onClick={this.handleClickOpen(row)}
+                        onClick={this.handleClickOpenAddJobRating(row)}
                         disabled
                       >
                         <EditIcon />
@@ -128,52 +132,12 @@ class SimpleTable extends Component {
               ))}
             </TableBody>
           </Table>
-          
-          { this.state.editRow != null && <AddReview open={this.state.open} handleClose={this.handleClose} companyName={companyName} activeRow={this.state.editRow} rating={this.state.editRow.rating} feedback={this.state.editRow.feedback} authUserUID = {this.props.authUser.uid} firebase={this.props.firebase}/>}
+          { this.state.activeRow != null && this.state.openCompanyStatistics === true &&  <CompanyStatistics open={this.state.openCompanyStatistics} handleClose={this.handleCompanyStatisticsClose} companyName={companyName} activeRow={this.state.activeRow} authUserUID = {this.props.authUser.uid} firebase={this.props.firebase}/>}
+          { this.state.activeRow != null && this.state.openAddJobRating === true && <AddReview open={this.state.openAddJobRating} handleClose={this.handleAddJobRatingClose} companyName={companyName} activeRow={this.state.activeRow} rating={this.state.activeRow.rating} feedback={this.state.activeRow.feedback} authUserUID = {this.props.authUser.uid} firebase={this.props.firebase}/>}
+        
         </Paper>
       
-        {/* { this.state.open && (  <Dialog
-          onClose={this.handleClose}
-          aria-labelledby="customized-dialog-title"
-          open={this.state.open}
-          style={{ marginTop: -150 }}
-        >
-          <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            Rate this job from  {companyName}
-          </DialogTitle>
-          <DialogContent>
-            <Wrapper style={{ marginTop: -10 }}>
-              <Typography gutterBottom>
-                <Box>
-                  <form>
-                    <h4 style={{ marginLeft: -210 }}>  Rating </h4>
-                    <div style={{ fontSize: 30 }}>
-                      <StarRatingComponent
-                        name="rating"
-                        starCount={10}
-                        value={rating}
-                        onStarClick={this.onStarClick.bind(this)}
-                      />
-                    </div>
-                    <h4 style={{ marginLeft: -190 }}> Feedback </h4>
-                    <Email
-                      style={{ marginLeft: 12 }}
-                      name="rating"
-                      type="text"
-                      placeholder="Leave your opinion on this offer"
-                      required
-                    />
-                  </form>
-                </Box>
-              </Typography>
-            </Wrapper>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Save changes
-            </Button>
-          </DialogActions>
-        </Dialog>)} */}
+      
 
       </React.Fragment>
     );

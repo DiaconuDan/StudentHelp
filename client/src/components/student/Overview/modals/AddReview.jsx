@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import { Wrapper, Email, Box } from "../../general/SignIn/SignIn";
-import { DialogTitle, DialogActions, DialogContent, styles } from './styles';
+import { Wrapper, Email, Box } from "../../../general/SignIn/SignIn";
+import { DialogTitle, DialogActions, DialogContent, styles } from '../styles';
 import StarRatingComponent from 'react-star-rating-component';
 
 
@@ -11,7 +11,6 @@ import StarRatingComponent from 'react-star-rating-component';
 class AddReview extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.rating);
     this.state = {
       rating: this.props.rating,
       feedback: this.props.feedback,
