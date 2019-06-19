@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
-import { SignUpLink } from '../SignUp/SignUp';
+import { SignUpLink } from "../SignUp/SignUp";
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../../constants/routes";
 import styled from "styled-components";
@@ -20,7 +20,18 @@ export const Email = styled.input`
   border: #ccc 1px solid;
   border-bottom: #ccc 2px solid;
   padding: 8px;
-  width: 250px; 
+  width: 250px;
+  margin-top: 10px;
+  font-size: 1em;
+  border-radius: 4px;
+`;
+
+export const TextArea = styled.textarea`
+  background: #ecf0f1;
+  border: #ccc 1px solid;
+  border-bottom: #ccc 2px solid;
+  padding: 8px;
+  width: 250px;
   margin-top: 10px;
   font-size: 1em;
   border-radius: 4px;
@@ -88,16 +99,16 @@ class SignInFormBase extends Component {
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password)
-      .then((signedUser) => {
+      .then(signedUser => {
         this.setState({ ...INITIAL_STATE });
-        this.props.firebase.user(signedUser.user.uid)
+        this.props.firebase
+          .user(signedUser.user.uid)
           .get()
           .then(snapshot => {
             const dbUser = snapshot.data();
             if (dbUser.role === "STUDENT") {
               this.props.history.push(ROUTES.STUDENT_SEARCH_JOBS);
-            }
-            else {
+            } else {
               if (dbUser.role === "COMPANY") {
                 this.props.history.push(ROUTES.COMPANY_FULFILMENT);
               }
