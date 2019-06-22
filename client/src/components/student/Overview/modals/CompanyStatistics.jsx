@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import { Wrapper, Email, TextArea } from "../../../general/SignIn/SignIn";
-import { DialogTitle, DialogActions, DialogContent, styles } from "../styles";
+import { Wrapper, Email } from "../../../general/SignIn/SignIn";
+import { DialogTitle, DialogActions, DialogContent } from "../styles";
 import styled from "styled-components";
 import StarRatingComponent from "react-star-rating-component";
 

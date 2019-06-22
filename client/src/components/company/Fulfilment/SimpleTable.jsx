@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -7,92 +7,113 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import moment from "moment" ;
+import Fab from "@material-ui/core/Fab";
+import EditIcon from "@material-ui/icons/Edit";
+import AddReview from "./modals/AddStudentRating" ;
+import { styles } from './styles';
+import { generateRows } from './utils';
 
-// TO DO : ending hour => end hour
-// sortari
-
-const styles = theme => ({
-  root: {
-    marginLeft: 350,
-    width: "60%",
-    marginTop: theme.spacing.unit * 3,
-    overflowX: "auto"
-  },
-  table: {
-    minWidth: 700
+class SimpleTable extends Component {
+  constructor(props) {
+    super(props);
+    this.handleAddJobRatingClose = this.handleAddStudentRatingClose.bind(this);
+    this.state = {
+      openAddStudentRating: false,
+      openUserStatistics: false,
+      activeRow: null
+    };
   }
-});
-
-let id = 0;
-function createData(status, startDate, endDate, location, responsesNumber, hourlyPayment) {
-  id += 1;
-  return { id, status, startDate, endDate,location,  responsesNumber, hourlyPayment };
-}
-
-
-const getStatus = ( jobStartDate, jobEndDate) => {
-
-
-  const currentDate = moment().format('YYYY-MM-DD HH:mm');
   
+  
+  handleClickOpenAddStudentRating = row => event => {
+    this.setState({
+      openAddStudentRating: true,
+      activeRow: {
+        ...row
+      }
+    });
+  };
 
-  if ( jobStartDate > currentDate) {
-    return "Upcoming" ;
-  }
-  if ( jobEndDate < currentDate) {
-    return "Finished" ;
-  }
-  if ( currentDate>= jobStartDate && currentDate <= jobEndDate) {
-    return "Running" ;
-  } 
- 
-}
-
-const generateRows = ( jobs ) => {
-  let rows = [] ;
-  jobs.forEach( job => {
-    const status = getStatus( job.startDate, job.endDate) ;
-    rows.push(createData(status, moment(job.startDate).format('DD-MM-YYYY HH:mm'), moment(job.endDate).format('DD-MM-YYYY HH:mm'), job.location, job.responses.length + "/" + job.studentsNumber, job.hourlyPayment));
-  })
-  return rows ;
-}
+  handleAddStudentRatingClose = () => {
+    this.setState({ openAddStudentRating: false });
+  };
 
 
-const  SimpleTable = (props) => {
-  const {  classes, jobs } = props;
-  const rows = generateRows(jobs) ;
-
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Status</TableCell>
-            <TableCell align="right">StartDate</TableCell>
-            <TableCell align="right">EndDate</TableCell>
-            <TableCell align="right">Location</TableCell>
-            <TableCell align="right">Students Enrolled</TableCell>
-            <TableCell align="right">Payment per hour</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.status}
-              </TableCell>
-              <TableCell align="right">{row.startDate}</TableCell>
-              <TableCell align="right">{row.endDate}</TableCell>
-              <TableCell align="right">{row.location}</TableCell>
-              <TableCell align="right">{row.responsesNumber}</TableCell>
-              <TableCell align="right">{row.hourlyPayment}</TableCell>
+  render() {
+    const { classes, jobs } = this.props;
+    const rows = generateRows(jobs);
+    return (
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Status</TableCell>
+              <TableCell align="right">StartDate</TableCell>
+              <TableCell align="right">EndDate</TableCell>
+              <TableCell align="right">Location</TableCell>
+              <TableCell align="right">Students Enrolled</TableCell>
+              <TableCell align="right">Payment per hour</TableCell>
+              <TableCell align="center">Add rating</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
+          </TableHead>
+          <TableBody>
+            {rows.map(row => (
+              <TableRow key={row.id}>
+                <TableCell component="th" scope="row">
+                  {row.status}
+                </TableCell>
+                <TableCell align="right">{row.startDate}</TableCell>
+                <TableCell align="right">{row.endDate}</TableCell>
+                <TableCell align="right">{row.location}</TableCell>
+                <TableCell align="right">{row.responsesNumber}</TableCell>
+                <TableCell align="right">{row.hourlyPayment}</TableCell>
+                <TableCell align="center">
+                    {row.status === "Finished" && (
+                      <Fab
+                        color="primary"
+                        aria-label="Edit"
+                        className={classes.fab}
+                        style={{ width: 40, height: 40 }}
+                        onClick={this.handleClickOpenAddStudentRating(row)}
+                      >
+                        <EditIcon />
+                      </Fab>
+                    )}
+                    {row.status === "Upcoming" && (
+                      <Fab
+                        color="primary"
+                        aria-label="Edit"
+                        className={classes.fab}
+                        style={{ width: 40, height: 40 }}
+                        onClick={this.handleClickOpenAddStudentRating(row)}
+                        disabled
+                      >
+                        <EditIcon />
+                      </Fab>
+                    )}
+                  </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {this.state.activeRow != null &&
+            this.state.openAddStudentRating === true && (
+              <AddReview
+                open={this.state.openAddStudentRating}
+                handleClose={this.handleAddStudentRatingClose}
+                activeRow={this.state.activeRow}
+                rating={this.state.activeRow.rating}
+                feedback={this.state.activeRow.feedback}
+                authUserUID={this.props.authUser.uid}
+                firebase={this.props.firebase}
+              />
+            )}
+      </Paper>
+    );
+  }
+
+
+
 }
 
 SimpleTable.propTypes = {

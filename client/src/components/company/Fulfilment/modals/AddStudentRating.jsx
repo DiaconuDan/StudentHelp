@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
 import { Wrapper, Email, Box } from "../../../general/SignIn/SignIn";
-import { DialogTitle, DialogActions, DialogContent, styles } from '../styles';
+import { DialogTitle, DialogActions, DialogContent } from '../styles';
 import StarRatingComponent from 'react-star-rating-component';
 
 
@@ -57,7 +57,7 @@ class AddReview extends Component {
     
   }
   render() {
-    const {rating, feedback} = this.state ;
+    const {rating} = this.state ;
     if ( this.state.handleClose) {
         return (
             <div>
@@ -107,7 +107,6 @@ class AddReview extends Component {
             </div>
           );
     }
-     
     
   }
 

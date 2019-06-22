@@ -58,7 +58,7 @@ class Fulfilment extends Component {
           <h1 style={{ textAlign: "center" }}>
             Fulfilment overview
         </h1>
-          <SimpleTable jobs={jobs} />
+          <SimpleTable jobs={jobs} authUser={this.props.authUser}/>
         </div>
       );
     }

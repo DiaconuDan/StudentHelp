@@ -15,9 +15,8 @@ import { generateRows } from "./utils";
 import { WindowClose } from "styled-icons/fa-regular/WindowClose";
 import classNames from "classnames";
 import { CheckCircle } from "styled-icons/boxicons-regular/CheckCircle";
-import AddReview from "./modals/AddReview";
+import AddReview from "./modals/AddCompanyRating";
 import CompanyStatistics from "./modals/CompanyStatistics";
-// import CurrentUserStatics from "./modals/CurrentUserStatistics";
 
 class SimpleTable extends Component {
   constructor(props) {
