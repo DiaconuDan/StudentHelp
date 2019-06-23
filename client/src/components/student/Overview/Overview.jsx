@@ -3,7 +3,7 @@ import { compose } from "recompose";
 import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
 import SimpleTable from "./SimpleTable";
-
+import {sortJobsByDate} from './utils' ;
 
 class Overview extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ class Overview extends Component {
           <h1 style={{ textAlign: "center" }}>
             Overview
         </h1>
-          <SimpleTable jobs={studentJobResponses} authUser={this.props.authUser} firebase={this.props.firebase} />
+          <SimpleTable jobs={sortJobsByDate(studentJobResponses)} authUser={this.props.authUser} firebase={this.props.firebase} />
 
 
         </div>

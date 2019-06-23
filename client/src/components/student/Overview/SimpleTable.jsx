@@ -182,12 +182,21 @@ class SimpleTable extends Component {
                 firebase={this.props.firebase}
               />
             )}
-          {/* <CurrentUserStatics
-            open={true}
-            handleClose={this.handleAddJobRatingClose}
-            authUserUID={this.props.authUser.uid}
-            firebase={this.props.firebase}
-          /> */}
+
+          {/* {this.state.activeRow != null &&
+            this.state.openAddJobRating === true && (
+              <AddReview
+                open={this.state.openAddJobRating}
+                handleClose={this.handleAddJobRatingClose}
+                companyName={companyName}
+                activeRow={this.state.activeRow}
+                rating={this.state.activeRow.rating}
+                feedback={this.state.activeRow.feedback}
+                authUser={this.props.authUser}
+                firebase={this.props.firebase}
+              />
+            )} */}
+
         </Paper>
       </React.Fragment>
     );

@@ -3,7 +3,7 @@ import { compose } from "recompose";
 import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
 import SimpleTable from "./SimpleTable";
-
+import {sortJobsByDate} from './utils' ;
 
 
 let currentCompanyUser = JSON.parse(localStorage.getItem('authUser'));
@@ -54,7 +54,7 @@ class Fulfilment extends Component {
           <h1 style={{ textAlign: "center" }}>
             Fulfilment overview
         </h1>
-          <SimpleTable jobs={jobs} authUser={this.props.authUser} firebase={this.props.firebase}/>
+          <SimpleTable jobs={sortJobsByDate(jobs)} authUser={this.props.authUser} firebase={this.props.firebase}/>
         </div>
       );
     }

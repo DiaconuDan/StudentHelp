@@ -14,8 +14,8 @@ class AddReview extends Component {
     this.props.activeRow.responses.forEach( response => {
       if ( response.studentUserUID === this.props.authUser.uid) {
         this.state = { // eslint-disable-line
-          rating: response.rating,
-          feedback: response.feedback,
+          rating: response.ratingGivenFromStudent,
+          feedback: response.feedbackGivenFromStudent,
           handleClose: this.props.handleClose
         };
       }

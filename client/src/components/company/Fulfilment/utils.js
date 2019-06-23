@@ -2,6 +2,26 @@
   
   import moment from "moment" ;
 
+  function compare(a, b) {
+    if (
+      moment(a.startDate).format("YYYY-MM-DD HH:mm") >
+      moment(b.startDate).format("YYYY-MM-DD HH:mm")
+    ) {
+      return -1;
+    }
+    if (
+      moment(a.startDate).format("YYYY-MM-DD HH:mm") <
+      moment(b.startDate).format("YYYY-MM-DD HH:mm")
+    ) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  export const sortJobsByDate = jobs => {
+    return jobs.sort(compare);
+  };
+
   
   let id = 0;
   export function createData(status, startDate, endDate, location, responsesNumber, hourlyPayment, responses, docID) {

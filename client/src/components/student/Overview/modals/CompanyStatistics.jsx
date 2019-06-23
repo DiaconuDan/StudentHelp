@@ -42,12 +42,6 @@ class CompanyStatistics extends Component {
   componentDidMount() {
     let feedbackArray = [];
 
-    // ia id-ul companiei
-    // cauta-l peste tot in jobs cu responses
-    // score array
-    // feedbacks arrays
-    // avg score: suma score/ core.length
-    // set this as this as state
     this.props.firebase
       .users()
       .where("fullName", "==", this.props.activeRow.companyFullname) // ma duc in joburile companiei
@@ -117,10 +111,10 @@ class CompanyStatistics extends Component {
                 <Typography gutterBottom>
                   <Box>
                     {this.state.feedbackArray.length !== 0 && (
-                      <h4 style={{ marginLeft: -60 }}>
-                        Avg. rating of {score / this.state.feedbackArray.length}{" "}
+                      <h3 style={{ textAlign: "center"}}>
+                        Avg. rating of {score / this.state.feedbackArray.length}/10{" "}
                         from {this.state.feedbackArray.length} reviews
-                      </h4>
+                      </h3>
                     )}
                     {this.state.feedbackArray &&
                       this.state.feedbackArray.map(feedback => {

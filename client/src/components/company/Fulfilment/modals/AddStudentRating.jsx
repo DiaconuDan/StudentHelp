@@ -126,7 +126,7 @@ class AddReview extends Component {
                     <Box>
                       <form>
                         {this.state.students.length > 0 && this.state.students.map( (student,index) => {
-                          return ( <React.Fragment>
+                          return ( <div style={{paddingBottom:15}}>
                             <h4 style={{ textAlign: "center" }}>  Rate {student.studentData.fullName}  </h4>   <div style={{ fontSize: 30 }}>  <StarRatingComponent
                             name={this.state.students[index].ratingName}
                             value = {this.state[this.state.students[index].ratingName]}
@@ -144,7 +144,7 @@ class AddReview extends Component {
                           placeholder={this.state[this.state.students[index].feedbackName]}
                           onChange={e => this.onTodoChange(this.state.students[index].feedbackName, e.target.value)}
                           required />
-                        </React.Fragment>)
+                        </div>)
                         })}
                     
                       </form>

@@ -87,7 +87,8 @@ onAnswer = answer => {
     ...currentResponses,
     {
       studentUserUID:studentUserUID,
-      studentResponse: studentResponse
+      studentResponse: studentResponse,
+      studentDetails: this.props.authUser
     }
    
   ]
