@@ -17,6 +17,7 @@ import classNames from "classnames";
 import { CheckCircle } from "styled-icons/boxicons-regular/CheckCircle";
 import AddReview from "./modals/AddCompanyRating";
 import CompanyStatistics from "./modals/CompanyStatistics";
+// import CurrentUserStatics from "./modals/CurrentUserStatistics";
 
 class SimpleTable extends Component {
   constructor(props) {
@@ -177,7 +178,7 @@ class SimpleTable extends Component {
                 activeRow={this.state.activeRow}
                 rating={this.state.activeRow.rating}
                 feedback={this.state.activeRow.feedback}
-                authUserUID={this.props.authUser.uid}
+                authUser={this.props.authUser}
                 firebase={this.props.firebase}
               />
             )}

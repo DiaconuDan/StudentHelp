@@ -11,16 +11,40 @@ import StarRatingComponent from 'react-star-rating-component';
 class AddReview extends Component {
   constructor(props) {
     super(props);
+    let students = [];
+    let alreadyGivenRatingsAndFeedbacks = [] ;
+    this.props.activeRow.responses.forEach( (response,index) => {
+        const feedbackName =  'feedback' + index;
+        const ratingName =  'rating' + index;
+        students.push( { feedback: response.feedbackGivenFromCompany, rating: response.ratingGivenFromCompany, feedbackValue:'', ratingInput: '', studentData: response.studentDetails, feedbackName: 'feedback' + index, ratingName: 'rating' + index });
+        alreadyGivenRatingsAndFeedbacks = {
+          ...alreadyGivenRatingsAndFeedbacks,
+          [ratingName]:  response.ratingGivenFromCompany,
+          [feedbackName]: response.feedbackGivenFromCompany
+        }
+      });
+
     this.state = {
-      rating: this.props.rating,
-      feedback: this.props.feedback,
-      handleClose: this.props.handleClose
-    };
+      handleClose: this.props.handleClose,
+      students: students,
+      ...alreadyGivenRatingsAndFeedbacks
+    }
+    console.log(this.state) ;
+
+     
   }
+
+
  
-  onStarClick(nextValue, prevValue, name) {
-    this.setState({ rating: nextValue });
+  onStarClick(variable, value) {
+    this.setState({ [variable]: value });
   }
+
+  handleInputChange(event) {
+    this.setState ({
+        [event.target.name]: event.target.value
+    })
+}
 
   onTodoChange(name, value) {
     this.setState({
@@ -29,70 +53,100 @@ class AddReview extends Component {
   }
 
   addReview() {
-        // trimite docID, authUserID -> schimba la authUserID si adauga
-        // fa update
-        console.log("intrat");
-        this.props.firebase.job(this.props.activeRow.docID)
-        .get()
-        .then(snapshot => {
-          const job = snapshot.data();
-          const responses = job.responses ;
-            for ( let i = 0 ; i < responses.length; i++) {
-                if ( responses[i].studentUserUID === this.props.authUserUID) {
-                    responses[i] = {
-                        ...responses[i],
-                        rating: this.state.rating,
-                        feedback: this.state.feedback
-                    }
-                }
-            }
-            console.log(responses);
-            this.props.firebase.job(this.props.activeRow.docID).update({
-                responses: responses
-              }) ;
-              return this.props.handleClose() ;
-        });
+    // console.log(this.props.activeRow.docID);
+    // let responses =  this.props.activeRow.responses ;
+    //         for ( let i = 0 ; i < this.props.activeRow.responses.length; i++) {
+    //           console.log(this.props.activeRow.responses[i].feedbackGivenFromStudent);
+                
+    //         }
+            // this.props.firebase.job(this.props.activeRow.docID).update({
+            //     responses: responses
+            //   }) ;
+              // return this.props.handleClose() ;
+
+              this.props.firebase.job(this.props.activeRow.docID)
+              .get()
+              .then(snapshot => {
+                const job = snapshot.data();
+                const responses = job.responses ;
+                  for ( let i = 0 ; i < responses.length; i++) {
+                        const rating = this.state[this.state.students[i].ratingName] ;
+                        const feedback = this.state[this.state.students[i].feedbackName] ;
+                          responses[i] = {
+                              ...responses[i],
+                              ratingGivenFromCompany: rating,
+                              feedbackGivenFromCompany: feedback
+                          }
+                      
+                  }
+                  console.log(responses);
+                  this.props.firebase.job(this.props.activeRow.docID).update({
+                      responses: responses
+                    }) ;
+                    return this.props.handleClose() ;
+              });
+ 
 
 
     
   }
+
+  renderInput = (input) => {
+    return(
+        <div>
+            <input
+                type={ input.type }
+                name={ input.name }
+                placeholder={ input.placeholder }
+                onBlur={ this.saveModule }
+                value={ input.value }
+                onChange={ this.handleInputChange }
+            />
+        </div>
+    )
+}
+
   render() {
-    const {rating} = this.state ;
-    if ( this.state.handleClose) {
+  
+    if (  this.state.handleClose) {
         return (
             <div>
                 <Dialog
               onClose={this.state.handleClose}
               aria-labelledby="customized-dialog-title"
               open={this.props.open}
-              style={{ marginTop: -150 }}
+              style={{ marginTop: -100 }}
             >
               <DialogTitle id="customized-dialog-title" onClose={this.props.handleClose}>
-                Rate this job from  {this.props.companyName}
+                Rate the students
               </DialogTitle>
               <DialogContent>
                 <Wrapper style={{ marginTop: -10 }}>
                   <Typography gutterBottom>
                     <Box>
                       <form>
-                        <h4 style={{ marginLeft: -210 }}>  Rating </h4>
-                        <div style={{ fontSize: 30 }}>
-                          <StarRatingComponent
-                            name="rating"
+                        {this.state.students.length > 0 && this.state.students.map( (student,index) => {
+                          return ( <React.Fragment>
+                            <h4 style={{ textAlign: "center" }}>  Rate {student.studentData.fullName}  </h4>   <div style={{ fontSize: 30 }}>  <StarRatingComponent
+                            name={this.state.students[index].ratingName}
+                            value = {this.state[this.state.students[index].ratingName]}
                             starCount={10}
-                            value={rating}
-                            onStarClick={this.onStarClick.bind(this)}
+                            onChange={e => this.onTodoChange(this.state.students[index].feedbackName, e.target.value)}
+                            onStarClick={this.onStarClick.bind(this,this.state.students[index].ratingName) }
+                           
                           />
-                        </div>
-                        <h4 style={{ marginLeft: -190 }}> Feedback </h4>
+                          </div>
+                           <h4 style={{ textAlign: "center" }}> Feedback {student.studentData.fullName}  </h4>
                         <Email
-                          style={{ marginLeft: 12 }}
-                          name="feeback"
+                         style={{ textAlign: "center" }}
+                          name={this.state.students[index].feedbackName}
                           type="text"
-                          placeholder="Leave your opinion on this offer"
-                          onChange={e => this.onTodoChange("feedback", e.target.value)}
-                          required
-                        />
+                          placeholder={this.state[this.state.students[index].feedbackName]}
+                          onChange={e => this.onTodoChange(this.state.students[index].feedbackName, e.target.value)}
+                          required />
+                        </React.Fragment>)
+                        })}
+                    
                       </form>
                     </Box>
                   </Typography>

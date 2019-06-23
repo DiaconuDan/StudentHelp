@@ -11,11 +11,17 @@ import StarRatingComponent from 'react-star-rating-component';
 class AddReview extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      rating: this.props.rating,
-      feedback: this.props.feedback,
-      handleClose: this.props.handleClose
-    };
+    this.props.activeRow.responses.forEach( response => {
+      if ( response.studentUserUID === this.props.authUser.uid) {
+        this.state = { // eslint-disable-line
+          rating: response.rating,
+          feedback: response.feedback,
+          handleClose: this.props.handleClose
+        };
+      }
+
+    })
+   
   }
  
   onStarClick(nextValue, prevValue, name) {
@@ -38,11 +44,12 @@ class AddReview extends Component {
           const job = snapshot.data();
           const responses = job.responses ;
             for ( let i = 0 ; i < responses.length; i++) {
-                if ( responses[i].studentUserUID === this.props.authUserUID) {
+                if ( responses[i].studentUserUID === this.props.authUser.uid) {
                     responses[i] = {
                         ...responses[i],
-                        rating: this.state.rating,
-                        feedback: this.state.feedback
+                        ratingGivenFromStudent: this.state.rating,
+                        feedbackGivenFromStudent: this.state.feedback,
+                        studentDetails: this.props.authUser
                     }
                 }
             }
@@ -89,7 +96,7 @@ class AddReview extends Component {
                           style={{ marginLeft: 12 }}
                           name="feeback"
                           type="text"
-                          placeholder="Leave your opinion on this offer"
+                          placeholder={this.state.feedback === '' ? "Leave your opinion on this offer" : this.state.feedback}
                           onChange={e => this.onTodoChange("feedback", e.target.value)}
                           required
                         />

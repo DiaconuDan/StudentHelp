@@ -4,11 +4,7 @@ import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
 import SimpleTable from "./SimpleTable";
 
-// vreau sa caut in Jobs toate job-urile cu companyUserId egal cu curentul authUser
-// le pun in tabel
-// daca Date.now ( cu tot cu ora) >= endHour -> FINISHEEEED ( pot da review)
-// daca Date.now ( cu tot cu ora) < startHour -> UPCOMING
-// daca Date.now ( cu tot cu ora) >= startHour && <= endHour -> RUNNING
+
 
 let currentCompanyUser = JSON.parse(localStorage.getItem('authUser'));
 
@@ -58,7 +54,7 @@ class Fulfilment extends Component {
           <h1 style={{ textAlign: "center" }}>
             Fulfilment overview
         </h1>
-          <SimpleTable jobs={jobs} authUser={this.props.authUser}/>
+          <SimpleTable jobs={jobs} authUser={this.props.authUser} firebase={this.props.firebase}/>
         </div>
       );
     }

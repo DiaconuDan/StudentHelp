@@ -26,6 +26,8 @@ class SimpleTable extends Component {
   
   
   handleClickOpenAddStudentRating = row => event => {
+
+    
     this.setState({
       openAddStudentRating: true,
       activeRow: {
@@ -48,10 +50,10 @@ class SimpleTable extends Component {
           <TableHead>
             <TableRow>
               <TableCell>Status</TableCell>
+              <TableCell align="right">Students Enrolled</TableCell>
               <TableCell align="right">StartDate</TableCell>
               <TableCell align="right">EndDate</TableCell>
               <TableCell align="right">Location</TableCell>
-              <TableCell align="right">Students Enrolled</TableCell>
               <TableCell align="right">Payment per hour</TableCell>
               <TableCell align="center">Add rating</TableCell>
             </TableRow>
@@ -62,10 +64,10 @@ class SimpleTable extends Component {
                 <TableCell component="th" scope="row">
                   {row.status}
                 </TableCell>
+                <TableCell align="right">{row.responsesNumber}</TableCell>
                 <TableCell align="right">{row.startDate}</TableCell>
                 <TableCell align="right">{row.endDate}</TableCell>
                 <TableCell align="right">{row.location}</TableCell>
-                <TableCell align="right">{row.responsesNumber}</TableCell>
                 <TableCell align="right">{row.hourlyPayment}</TableCell>
                 <TableCell align="center">
                     {row.status === "Finished" && (
@@ -104,7 +106,7 @@ class SimpleTable extends Component {
                 activeRow={this.state.activeRow}
                 rating={this.state.activeRow.rating}
                 feedback={this.state.activeRow.feedback}
-                authUserUID={this.props.authUser.uid}
+                authUser={this.props.authUser}
                 firebase={this.props.firebase}
               />
             )}
