@@ -13,6 +13,7 @@
     "express": "^4.16.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-loader-spinner": "^2.3.0",
     "react-router-dom": "^5.0.0",
     "recompose": "^0.30.0"
   },

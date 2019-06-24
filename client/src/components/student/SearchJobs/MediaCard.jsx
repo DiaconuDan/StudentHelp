@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import { withFirebase } from "../../general/Firebase";
 import { compose } from "recompose";
 import green from '@material-ui/core/colors/green';
+import Loader from "react-loader-spinner";
 
 const ACCEPT_ANSWER = "right";
 const REJECT_ANSWER = "left";
@@ -174,7 +175,6 @@ class MediaCard extends React.Component {
           <CardMedia
               className={classes.media}
               image={require("./office_job.jpg")}
-              title="Offer"
           />
           <CardContent>
               <Typography component="p">
@@ -190,7 +190,6 @@ class MediaCard extends React.Component {
               <Typography component="p">
                 Fulfilment: {jobs[0].responses.length} / {jobs[0].studentsNumber}
               </Typography>
-              <br />
 
               
           </CardContent>
@@ -218,8 +217,33 @@ class MediaCard extends React.Component {
           </CardActions>
       </Card>
         )}
-                 {jobs.length === 0 && hasAvailableJobs && (<div style={{marginLeft: 600}}>Loading jobs.</div>)}
-                 {jobs.length === 0 && !hasAvailableJobs && (<div style={{marginLeft: 600}}>No more available jobs.</div>)}
+                 {jobs.length === 0 && hasAvailableJobs && (<div style={{position:"fixed",top:"50%",left:"50%"}}> <Loader style={{marginLeft: 600}} /></div>)}
+
+
+
+                 {jobs.length === 0 && !hasAvailableJobs && (  <Card className={classes.card} style={{margin:"0 auto", marginTop:75}}>
+          <CardHeader
+            title={"There are no available jobs at the moment"}
+          />
+          <CardMedia
+              className={classes.media}
+              image={require("./searching_job.jpg")}
+          />
+          <CardContent>
+              <Typography component="p">
+                Have some patience and come back later when the students will respond to the offer.
+              </Typography>
+          </CardContent>
+      </Card>)}
+
+
+
+
+
+
+
+
+               
             </div>
         );
     }
@@ -229,7 +253,6 @@ MediaCard.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-// export default withStyles(styles)(MediaCard);
 
 
 export default compose(

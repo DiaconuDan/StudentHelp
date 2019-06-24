@@ -2,7 +2,7 @@ import React from 'react';
 import { compose } from "recompose";
 import { withFirebase } from "../../general/Firebase" ;
 import { withAuthorization,AuthUserContext } from '../../general/Session';
-import Swiper from './Swiper' ;
+
 import MediaCard from './MediaCard' ;
 
 
