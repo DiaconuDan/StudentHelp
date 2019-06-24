@@ -107,6 +107,7 @@ remove = () => this.setState(({ jobs }) => ({
 
 render() {
   const { jobs, hasAvailableJobs } = this.state;
+  const x = 1 ;
 
   return (
     <div>
