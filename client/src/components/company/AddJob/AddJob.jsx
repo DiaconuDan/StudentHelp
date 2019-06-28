@@ -9,7 +9,7 @@ import {
   Box,
   Error
 } from "../../general/SignIn/SignIn";
-import moment from "moment"; 
+import moment from "moment";
 
 const INITIAL_STATE = {
   location: "",
@@ -17,11 +17,11 @@ const INITIAL_STATE = {
   hourlyPayment: null,
   date: null,
   startHour: "",
-  endHour: ""
+  endHour: "",
+  jobDescription: ""
 };
 
 class AddJob extends Component {
-  
   constructor(props) {
     super(props);
 
@@ -30,32 +30,37 @@ class AddJob extends Component {
 
   onSubmit = event => {
     const {
-      location ,
+      location,
       hourlyPayment,
       date,
       startHour,
       endHour,
-      studentsNumber
+      studentsNumber,
+      jobDescription
     } = this.state;
 
     const authUser = JSON.parse(localStorage.getItem("authUser"));
     const companyUserUID = authUser.uid;
     const companyFullname = authUser.fullName;
-    const startDate = moment(date + " "+startHour).format('YYYY-MM-DD HH:mm');
-    const endDate = moment(date + " "+endHour).format('YYYY-MM-DD HH:mm');
-    const responses = [] ;
-    this.props.firebase.jobs().add({
-      companyUserUID,
-      companyFullname,
-      location,
-      hourlyPayment,
-      startDate,
-      endDate,
-      studentsNumber,
-      responses
-    }).then(ref => {
-      ref.set({ docID: ref.id }, { merge: true }) });
-
+    const startDate = moment(date + " " + startHour).format("YYYY-MM-DD HH:mm");
+    const endDate = moment(date + " " + endHour).format("YYYY-MM-DD HH:mm");
+    const responses = [];
+    this.props.firebase
+      .jobs()
+      .add({
+        companyUserUID,
+        companyFullname,
+        location,
+        jobDescription,
+        hourlyPayment,
+        startDate,
+        endDate,
+        studentsNumber,
+        responses
+      })
+      .then(ref => {
+        ref.set({ docID: ref.id }, { merge: true });
+      });
 
     this.setState({ ...INITIAL_STATE });
     event.preventDefault();
@@ -67,12 +72,10 @@ class AddJob extends Component {
   };
 
   render() {
-    const {
-      startHour,
-      endHour
-    } = this.state;
+    const { startHour, endHour } = this.state;
 
-    const isInvalid = startHour >= endHour && endHour !== "" && startHour !== "" ;
+    const isInvalid =
+      startHour >= endHour && endHour !== "" && startHour !== "";
 
     return (
       <Wrapper style={{ marginTop: 150 }}>
@@ -84,6 +87,13 @@ class AddJob extends Component {
                 name="location"
                 type="text"
                 placeholder="Location"
+                onChange={this.onChange}
+                required
+              />
+              <Email
+                name="jobDescription"
+                type="text"
+                placeholder="Job description"
                 onChange={this.onChange}
                 required
               />
