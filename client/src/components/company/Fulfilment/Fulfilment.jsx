@@ -3,33 +3,23 @@ import { compose } from "recompose";
 import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
 import SimpleTable from "./SimpleTable";
-import {sortJobsByDate} from './utils' ;
-
-
-let currentCompanyUser = JSON.parse(localStorage.getItem('authUser'));
-
+import { sortJobsByDate } from "./utils";
 
 class Fulfilment extends Component {
   constructor(props) {
     super(props);
-    const authUser = this.props.authUser ; 
     this.state = {
       loading: true,
-      jobs: [],
-      authUser: authUser
+      jobs: []
     };
   }
 
-
-
   componentDidMount() {
     this.setState({ loading: true });
-    const { authUser} = this.state ;
-    console.log(authUser);
-    const currentCompanyUID = currentCompanyUser.uid;
+    const currentCompanyUID = this.props.authUser.uid;
     this.props.firebase
       .jobs()
-      .where('companyUserUID', '==', currentCompanyUID) // ma duc in joburile companiei
+      .where("companyUserUID", "==", currentCompanyUID) // ma duc in joburile companiei
       .onSnapshot(jobsSnapshot => {
         let jobs = [];
         jobsSnapshot.forEach(jobDoc => {
@@ -38,7 +28,7 @@ class Fulfilment extends Component {
         console.log(jobs);
         this.setState({
           jobs,
-          loading: false,
+          loading: false
         });
       });
   }
@@ -51,15 +41,16 @@ class Fulfilment extends Component {
     } else {
       return (
         <div>
-          <h1 style={{ textAlign: "center" }}>
-            Fulfilment overview
-        </h1>
-          <SimpleTable jobs={sortJobsByDate(jobs)} authUser={this.props.authUser} firebase={this.props.firebase}/>
+          <h1 style={{ textAlign: "center" }}>Fulfilment overview</h1>
+          <SimpleTable
+            jobs={sortJobsByDate(jobs)}
+            authUser={this.props.authUser}
+            firebase={this.props.firebase}
+          />
         </div>
       );
     }
   }
-
 }
 
 const condition = authUser => authUser && authUser.role === "COMPANY";
