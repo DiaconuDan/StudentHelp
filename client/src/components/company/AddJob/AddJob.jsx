@@ -2,6 +2,11 @@ import { compose } from "recompose";
 import React, { Component } from "react";
 import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 import {
   Wrapper,
   Email,
@@ -60,6 +65,7 @@ class AddJob extends Component {
       })
       .then(ref => {
         ref.set({ docID: ref.id }, { merge: true });
+        NotificationManager.success("Job successfully added!");
       });
 
     this.setState({ ...INITIAL_STATE });
@@ -81,6 +87,7 @@ class AddJob extends Component {
       <Wrapper style={{ marginTop: 150 }}>
         <div>
           <Box>
+            <NotificationContainer />
             <h1>Add Job</h1>
             <form onSubmit={this.onSubmit.bind(this)}>
               <Email
