@@ -42,7 +42,8 @@ export const generateRows = jobs => {
         job.hourlyPayment,
         job.companyFullname,
         job.docID,
-        job.responses
+        job.responses,
+        job.jobDescription
       )
     );
   });
@@ -74,7 +75,8 @@ export function createData(
   hourlyPayment,
   companyFullname,
   docID,
-  responses
+  responses,
+  jobDescription
 ) {
   id += 1;
   return {
@@ -88,6 +90,7 @@ export function createData(
     hourlyPayment,
     companyFullname,
     docID,
-    responses
+    responses,
+    jobDescription
   };
 }

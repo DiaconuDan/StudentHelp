@@ -44,7 +44,6 @@ class SimpleTable extends Component {
   };
 
   handleClickOpenCompanyStatistics = row => event => {
-    console.log("intrat");
     this.setState({
       openCompanyStatistics: true,
       activeRow: {
@@ -74,7 +73,7 @@ class SimpleTable extends Component {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Status</TableCell>
-                <TableCell align="left">Answer</TableCell>
+                <TableCell align="left">Job Description</TableCell>
                 <TableCell align="left">Company</TableCell>
                 <TableCell align="left">StartDate</TableCell>
                 <TableCell align="left">EndDate</TableCell>
@@ -111,10 +110,7 @@ class SimpleTable extends Component {
                       </Button>
                     )}
                   </TableCell>
-                  <TableCell align="left">
-                    {row.studentResponse === "Yes" && <CheckCircle />}
-                    {row.studentResponse === "No" && <WindowClose />}
-                  </TableCell>
+                  <TableCell align="left">{row.jobDescription}</TableCell>
                   <TableCell align="left">
                     {" "}
                     <p
@@ -125,8 +121,18 @@ class SimpleTable extends Component {
                       {row.companyFullname}
                     </p>
                   </TableCell>
-                  <TableCell align="left">{row.startDate}</TableCell>
-                  <TableCell align="left">{row.endDate}</TableCell>
+                  <TableCell align="right">
+                    {" "}
+                    <div style={{ fontSize: 12, marginLeft: -20 }}>
+                      {row.startDate}
+                    </div>
+                  </TableCell>
+                  <TableCell align="right">
+                    {" "}
+                    <div style={{ fontSize: 12, marginLeft: -15 }}>
+                      {row.endDate}
+                    </div>
+                  </TableCell>
                   <TableCell align="left">{row.location}</TableCell>
                   <TableCell align="center">{row.hourlyPayment}</TableCell>
                   <TableCell align="center">
@@ -196,7 +202,6 @@ class SimpleTable extends Component {
                 firebase={this.props.firebase}
               />
             )} */}
-
         </Paper>
       </React.Fragment>
     );
