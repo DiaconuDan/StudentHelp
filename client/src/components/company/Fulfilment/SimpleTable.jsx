@@ -10,8 +10,8 @@ import Paper from "@material-ui/core/Paper";
 import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import AddReview from "./modals/AddStudentRating";
-import { styles } from './styles';
-import { generateRows } from './utils';
+import { styles } from "./styles";
+import { generateRows } from "./utils";
 import classNames from "classnames";
 import Button from "@material-ui/core/Button";
 import StudentStatistics from "./modals/StudentStatistics";
@@ -29,10 +29,7 @@ class SimpleTable extends Component {
     };
   }
 
-
   handleClickOpenAddStudentRating = row => event => {
-
-
     this.setState({
       openAddStudentRating: true,
       activeRow: {
@@ -44,7 +41,6 @@ class SimpleTable extends Component {
   handleAddStudentRatingClose = () => {
     this.setState({ openAddStudentRating: false });
   };
-
 
   handleOpenStudentStatistics = row => event => {
     this.setState({
@@ -67,8 +63,9 @@ class SimpleTable extends Component {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Status</TableCell>
-              <TableCell align="right">Students Enrolled</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">StudentsEnrolled</TableCell>
+              <TableCell align="right">JobDescription</TableCell>
               <TableCell align="right">StartDate</TableCell>
               <TableCell align="right">EndDate</TableCell>
               <TableCell align="right">Location</TableCell>
@@ -104,16 +101,29 @@ class SimpleTable extends Component {
                     </Button>
                   )}
                 </TableCell>
-                <TableCell align="right">   {" "}
-                    <p
-                      style={{ cursor: "pointer" }}
-                      onClick={this.handleOpenStudentStatistics(row)}
-                    >
-                      {" "}
-                      {row.responsesNumber}
-                    </p></TableCell>
-                <TableCell align="right">{row.startDate}</TableCell>
-                <TableCell align="right">{row.endDate}</TableCell>
+                <TableCell align="center">
+                  {" "}
+                  <p
+                    style={{ cursor: "pointer" }}
+                    onClick={this.handleOpenStudentStatistics(row)}
+                  >
+                    {" "}
+                    {row.responsesNumber}
+                  </p>
+                </TableCell>
+                <TableCell align="right">{row.jobDescription}</TableCell>
+                <TableCell align="right">
+                  {" "}
+                  <div style={{ fontSize: 12, marginLeft: -20 }}>
+                    {row.startDate}
+                  </div>
+                </TableCell>
+                <TableCell align="right">
+                  {" "}
+                  <div style={{ fontSize: 12, marginLeft: -15 }}>
+                    {row.endDate}
+                  </div>
+                </TableCell>
                 <TableCell align="right">{row.location}</TableCell>
                 <TableCell align="right">{row.hourlyPayment}</TableCell>
                 <TableCell align="center">
@@ -133,7 +143,11 @@ class SimpleTable extends Component {
                       color="primary"
                       aria-label="Edit"
                       className={classes.fab}
-                      style={{ width: 40, height: 40, color: "white !important" }}
+                      style={{
+                        width: 40,
+                        height: 40,
+                        color: "white !important"
+                      }}
                       onClick={this.handleClickOpenAddStudentRating(row)}
                       disabled
                     >
@@ -167,14 +181,9 @@ class SimpleTable extends Component {
               firebase={this.props.firebase}
             />
           )}
-
-     
       </Paper>
     );
   }
-
-
-
 }
 
 SimpleTable.propTypes = {
