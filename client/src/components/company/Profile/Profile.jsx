@@ -4,7 +4,7 @@ import { withFirebase } from "../../general/Firebase";
 import { withAuthorization } from "../../general/Session";
 import styled from "styled-components";
 import { Ban } from "styled-icons/fa-solid/Ban";
-
+import Loader from "react-loader-spinner";
 import { Wrapper, Email, Button, Box } from "../../general/SignIn/SignIn";
 
 const Label = styled.label`
@@ -47,7 +47,11 @@ class CompanyProfile extends Component {
 
   render() {
     if (!this.state) {
-      return <div style={{ marginLeft: 200 }}> Loading..</div>;
+      return (
+        <div style={{ position: "fixed", top: "50%", left: "50%" }}>
+          <Loader style={{ marginLeft: 600 }} />
+        </div>
+      );
     }
 
     const { fullName, email, role, location, phoneNumber } = this.state;
