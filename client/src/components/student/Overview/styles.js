@@ -22,7 +22,7 @@ export const styles = theme => ({
   },
   root: {
     marginLeft: 135,
-    width: "70%",
+    width: "90%",
     marginTop: theme.spacing.unit * 3,
     overflowX: "auto"
   },

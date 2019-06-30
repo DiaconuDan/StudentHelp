@@ -10,8 +10,8 @@ import green from '@material-ui/core/colors/green';
 
 export const styles = theme => ({
     root: {
-      marginLeft: 350,
-      width: "70%",
+      marginLeft: 120,
+      width: "90%",
       marginTop: theme.spacing.unit * 3,
       overflowX: "auto"
     },
