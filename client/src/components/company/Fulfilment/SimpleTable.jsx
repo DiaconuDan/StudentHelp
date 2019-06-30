@@ -15,6 +15,7 @@ import { generateRows } from "./utils";
 import classNames from "classnames";
 import Button from "@material-ui/core/Button";
 import StudentStatistics from "./modals/StudentStatistics";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class SimpleTable extends Component {
   constructor(props) {
@@ -36,6 +37,10 @@ class SimpleTable extends Component {
         ...row
       }
     });
+  };
+
+  handleDeleteJob= row => event => {
+    return this.props.firebase.job(row.docID).delete() ;
   };
 
   handleAddStudentRatingClose = () => {
@@ -71,6 +76,7 @@ class SimpleTable extends Component {
               <TableCell align="right">Location</TableCell>
               <TableCell align="right">Payment per hour</TableCell>
               <TableCell align="center">Add rating</TableCell>
+              <TableCell align="center">Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -155,6 +161,7 @@ class SimpleTable extends Component {
                     </Fab>
                   )}
                 </TableCell>
+                <TableCell align="center"><DeleteIcon className={classes.icon}  onClick={this.handleDeleteJob(row)} style={{cursor:"pointer"}} />  </TableCell>
               </TableRow>
             ))}
           </TableBody>
