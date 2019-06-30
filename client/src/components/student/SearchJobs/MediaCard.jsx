@@ -9,67 +9,15 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import classNames from "classnames";
 import Typography from "@material-ui/core/Typography";
-import red from "@material-ui/core/colors/red";
 import Button from "@material-ui/core/Button";
 import { withFirebase } from "../../general/Firebase";
 import { compose } from "recompose";
-import green from "@material-ui/core/colors/green";
 import Loader from "react-loader-spinner";
+import {ACCEPT_ANSWER, REJECT_ANSWER, styles} from './styles.js';
 
-const ACCEPT_ANSWER = "right";
-const REJECT_ANSWER = "left";
-const styles = theme => ({
-  card: {
-    maxWidth: 550,
-    margin: "0 auto",
-    marginTop: 50
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%" // 16:9
-  },
-  actions: {
-    display: "flex"
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest
-    })
-  },
-  expandOpen: {
-    transform: "rotate(180deg)"
-  },
-  avatar: {
-    backgroundColor: red[500]
-  },
-  margin: {
-    margin: theme.spacing.unit
-  },
-  greenButton: {
-    fontColor: "white",
-    color: theme.palette.getContrastText(green[500]),
-    backgroundColor: green[500],
-    "&:hover": {
-      backgroundColor: green[700]
-    }
-  },
-  redButton: {
-    fontColor: "white",
-    color: theme.palette.getContrastText(red[500]),
-    backgroundColor: red[500],
-    "&:hover": {
-      backgroundColor: red[700]
-    }
-  },
-  button: {
-    margin: theme.spacing.unit,
-    textTransform: "none",
-    width: 250,
-    color: "white"
-  }
-});
+
+
+import {getPictureOfJobDescription,noResultPicture } from './images.js' ;
 
 class MediaCard extends React.Component {
   state = {
@@ -162,7 +110,6 @@ class MediaCard extends React.Component {
   render() {
     const { classes } = this.props;
     const { jobs, hasAvailableJobs } = this.state;
-    console.log(this.state);
     return (
       <div>
         {jobs.length > 0 && (
@@ -177,7 +124,7 @@ class MediaCard extends React.Component {
             />
             <CardMedia
               className={classes.media}
-              image={require("./office_job.jpg")}
+              image={getPictureOfJobDescription(jobs[0].jobDescription)}
             />
             <CardContent>
               <Typography component="p">
@@ -193,6 +140,10 @@ class MediaCard extends React.Component {
               <Typography component="p">
                 Fulfilment: {jobs[0].responses.length} /{" "}
                 {jobs[0].studentsNumber}
+              </Typography>
+              <br />
+              <Typography component="p">
+                Job description:  {jobs[0].jobDescription}
               </Typography>
             </CardContent>
             <CardActions className={classes.actions} disableActionSpacing>
@@ -240,7 +191,7 @@ class MediaCard extends React.Component {
             <CardHeader title={"There are no available jobs at the moment"} />
             <CardMedia
               className={classes.media}
-              image={require("./searching_job.jpg")}
+              image={noResultPicture}
             />
             <CardContent>
               <Typography component="p">
