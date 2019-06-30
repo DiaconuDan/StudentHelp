@@ -26,6 +26,10 @@ export const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     overflowX: "auto"
   },
+  icon: {
+    margin: theme.spacing.unit,
+    fontSize: 32,
+  },
   table: {
     minWidth: 700
   },

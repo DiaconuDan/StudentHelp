@@ -12,23 +12,45 @@ import EditIcon from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import { styles } from "./styles";
 import { generateRows } from "./utils";
-import { WindowClose } from "styled-icons/fa-regular/WindowClose";
 import classNames from "classnames";
-import { CheckCircle } from "styled-icons/boxicons-regular/CheckCircle";
 import AddReview from "./modals/AddCompanyRating";
 import CompanyStatistics from "./modals/CompanyStatistics";
-// import CurrentUserStatics from "./modals/CurrentUserStatistics";
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 class SimpleTable extends Component {
   constructor(props) {
     super(props);
     this.handleAddJobRatingClose = this.handleAddJobRatingClose.bind(this);
+    this.handleDeleteAnswer = this.handleDeleteAnswer.bind(this);
     this.state = {
       openAddJobRating: false,
       openCompanyStatistics: false,
       activeRow: null
     };
   }
+
+  handleDeleteAnswer= (row, authUser) => event => {
+
+    this.props.firebase.job(row.docID)
+    .get()
+    .then(snapshot => {
+      const job = snapshot.data();
+      let responses = job.responses ;
+        for ( let i = 0 ; i < responses.length; i++) {
+            if ( responses[i].studentUserUID === authUser.uid) {
+              responses.splice(i);
+            }
+        }
+        console.log(responses);
+        this.props.firebase.job(row.docID).update({
+            responses: responses
+          }) ;
+         
+    });
+
+  };
+
 
   handleClickOpenAddJobRating = row => event => {
     this.setState({
@@ -80,6 +102,7 @@ class SimpleTable extends Component {
                 <TableCell align="left">Location</TableCell>
                 <TableCell align="center">Payment per hour</TableCell>
                 <TableCell align="center">Add rating</TableCell>
+                <TableCell align="center">Reject</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -160,6 +183,7 @@ class SimpleTable extends Component {
                       </Fab>
                     )}
                   </TableCell>
+                  <TableCell align="center"><DeleteIcon className={classes.icon}  onClick={this.handleDeleteAnswer(row, this.props.authUser)} style={{cursor:"pointer"}} />  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
