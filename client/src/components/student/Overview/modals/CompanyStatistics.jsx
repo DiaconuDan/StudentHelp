@@ -41,7 +41,7 @@ class CompanyStatistics extends Component {
 
   componentDidMount() {
     let feedbackArray = [];
-
+    console.log(this.props.activeRow.companyUserUID);
     this.props.firebase
       .users()
       .where("fullName", "==", this.props.activeRow.companyFullname) // ma duc in joburile companiei
@@ -54,6 +54,7 @@ class CompanyStatistics extends Component {
 
         this.props.firebase.jobs().onSnapshot(jobSnapshot => {
           jobSnapshot.forEach(jobDoc => {
+            console.log(jobDoc.data());
             if (jobDoc.data().companyUserUID === id) {
               const responses = jobDoc.data().responses;
               responses.forEach(response => {
@@ -91,7 +92,7 @@ class CompanyStatistics extends Component {
       this.state.feedbackArray.forEach(feedback => {
         score += feedback.rating;
       });
-      console.log(score);
+      console.log(this.state.feedbackArray);
       return (
         <div>
           <Dialog
@@ -111,9 +112,9 @@ class CompanyStatistics extends Component {
                 <Typography gutterBottom>
                   <Box>
                     {this.state.feedbackArray.length !== 0 && (
-                      <h3 style={{ textAlign: "center"}}>
-                        Avg. rating of {score / this.state.feedbackArray.length}/10{" "}
-                        from {this.state.feedbackArray.length} reviews
+                      <h3 style={{ textAlign: "center" }}>
+                        Avg. rating of {score / this.state.feedbackArray.length}
+                        /10 from {this.state.feedbackArray.length} reviews
                       </h3>
                     )}
                     {this.state.feedbackArray &&
@@ -156,7 +157,7 @@ class CompanyStatistics extends Component {
                         );
                       })}
                     {this.state.feedbackArray.length === 0 && (
-                      <h3>Looking for ratings for this company.. </h3>
+                      <h3>zzzzLooking for ratings for this company.. </h3>
                     )}
                   </Box>
                 </Typography>
