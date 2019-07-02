@@ -45,7 +45,7 @@ class Fulfilment extends Component {
     } else {
       return (
         <div>
-          <h1 style={{ textAlign: "center" }}>Fulfilment overview</h1>
+          <h1 style={{ textAlign: "center" }}>s</h1>
           <SimpleTable
             jobs={sortJobsByDate(jobs)}
             authUser={this.props.authUser}

@@ -15,7 +15,7 @@ import { generateRows } from "./utils";
 import classNames from "classnames";
 import Button from "@material-ui/core/Button";
 import StudentStatistics from "./modals/StudentStatistics";
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from "@material-ui/icons/Delete";
 
 class SimpleTable extends Component {
   constructor(props) {
@@ -39,8 +39,8 @@ class SimpleTable extends Component {
     });
   };
 
-  handleDeleteJob= row => event => {
-    return this.props.firebase.job(row.docID).delete() ;
+  handleDeleteJob = row => event => {
+    return this.props.firebase.job(row.docID).delete();
   };
 
   handleAddStudentRatingClose = () => {
@@ -48,6 +48,36 @@ class SimpleTable extends Component {
   };
 
   handleOpenStudentStatistics = row => event => {
+    let score = 0;
+    let numberOfReceivedRatings = 0;
+
+    //   mergi pe la fiecare student care participa
+    //   gaseste-i rating-ul, adauga-l la array
+    // trimite array-ul ca prop la studentStatistic
+
+    this.props.firebase.jobs().onSnapshot(jobSnapshot => {
+      jobSnapshot.forEach(jobDoc => {
+        const responses = jobDoc.data().responses;
+
+        responses.forEach(response => {
+          if (
+            response.studentResponse === true &&
+            response.feedbackGivenFromCompany !== undefined &&
+            response.ratingGivenFromCompany !== undefined &&
+            response.studentUserUID === row.studentUserUID
+          ) {
+            console.log("intrat prietene");
+            score += response.feedbackGivenFromCompany;
+            numberOfReceivedRatings += 1;
+          }
+        });
+      });
+      this.setState({
+        handleClose: this.props.handleClose,
+        numberOfReceivedRatings,
+        score
+      });
+    });
     this.setState({
       openStudentStatistics: true,
       activeRow: {
@@ -161,7 +191,13 @@ class SimpleTable extends Component {
                     </Fab>
                   )}
                 </TableCell>
-                <TableCell align="center"><DeleteIcon className={classes.icon}  onClick={this.handleDeleteJob(row)} style={{cursor:"pointer"}} />  </TableCell>
+                <TableCell align="center">
+                  <DeleteIcon
+                    className={classes.icon}
+                    onClick={this.handleDeleteJob(row)}
+                    style={{ cursor: "pointer" }}
+                  />{" "}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
