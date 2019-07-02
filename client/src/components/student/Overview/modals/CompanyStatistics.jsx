@@ -41,44 +41,34 @@ class CompanyStatistics extends Component {
 
   componentDidMount() {
     let feedbackArray = [];
-    console.log(this.props.activeRow.companyUserUID);
-    this.props.firebase
-      .users()
-      .where("fullName", "==", this.props.activeRow.companyFullname) // ma duc in joburile companiei
-      .onSnapshot(userSnapshot => {
-        let id;
-        let score = 0;
-        userSnapshot.forEach(uerDoc => {
-          id = uerDoc.id;
-        });
-
-        this.props.firebase.jobs().onSnapshot(jobSnapshot => {
-          jobSnapshot.forEach(jobDoc => {
-            console.log(jobDoc.data());
-            if (jobDoc.data().companyUserUID === id) {
-              const responses = jobDoc.data().responses;
-              responses.forEach(response => {
-                if (
-                  response.studentResponse === true &&
-                  response.feedback !== undefined &&
-                  response.rating !== undefined
-                ) {
-                  score += response.feedback;
-                  feedbackArray.push({
-                    feedback: response.feedback,
-                    rating: response.rating
-                  });
-                }
+    let score = 0;
+    this.props.firebase.jobs().onSnapshot(jobSnapshot => {
+      jobSnapshot.forEach(jobDoc => {
+        if (
+          jobDoc.data().companyUserUID === this.props.activeRow.companyUserUID
+        ) {
+          const responses = jobDoc.data().responses;
+          responses.forEach(response => {
+            if (
+              response.studentResponse === true &&
+              response.feedbackGivenFromStudent !== undefined &&
+              response.ratingGivenFromStudent !== undefined
+            ) {
+              score += response.feedback;
+              feedbackArray.push({
+                feedback: response.feedbackGivenFromStudent,
+                rating: response.ratingGivenFromStudent
               });
             }
           });
-          this.setState({
-            handleClose: this.props.handleClose,
-            feedbackArray,
-            score
-          });
-        });
+        }
       });
+      this.setState({
+        handleClose: this.props.handleClose,
+        feedbackArray,
+        score
+      });
+    });
   }
   onTodoChange(name, value) {
     this.setState({
