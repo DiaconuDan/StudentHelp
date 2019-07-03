@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import { Wrapper, Email } from "../../../general/SignIn/SignIn";
+import { Wrapper, Input } from "../../../general/SignIn/SignIn";
 import { DialogTitle, DialogActions, DialogContent } from "../styles";
 import styled from "styled-components";
 import StarRatingComponent from "react-star-rating-component";
@@ -89,7 +89,7 @@ class CompanyStatistics extends Component {
             onClose={this.state.handleClose}
             aria-labelledby="customized-dialog-title"
             open={this.props.open}
-            style={{ marginTop: -150 }}
+            style={{ marginTop: -10 }}
           >
             <DialogTitle
               id="customized-dialog-title"
@@ -103,7 +103,7 @@ class CompanyStatistics extends Component {
                   <Box>
                     {this.state.feedbackArray.length !== 0 && (
                       <h3 style={{ textAlign: "center" }}>
-                        Avg. rating of {score / this.state.feedbackArray.length}
+                        Avg. rating of {(score / this.state.feedbackArray.length).toFixed(2)}
                         /10 from {this.state.feedbackArray.length} reviews
                       </h3>
                     )}
@@ -137,7 +137,7 @@ class CompanyStatistics extends Component {
                             >
                               Feedback
                             </Label>
-                            <Email
+                            <Input
                               type="text"
                               value={feedback.feedback}
                               disabled

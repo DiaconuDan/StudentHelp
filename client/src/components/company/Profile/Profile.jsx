@@ -5,7 +5,16 @@ import { withAuthorization } from "../../general/Session";
 import styled from "styled-components";
 import { Ban } from "styled-icons/fa-solid/Ban";
 import Loader from "react-loader-spinner";
-import { Wrapper, Email, Button, Box } from "../../general/SignIn/SignIn";
+import { Wrapper, Input, Button, Box } from "../../general/SignIn/SignIn";
+import { PersonPin } from "styled-icons/material/PersonPin";
+import CurrentUserStatistics from "./modal/CurrentUserStatistics" ;
+
+const PersonPinIcon = styled(PersonPin)`
+  height: 30px;
+  margin-left: 5px;
+  padding-right: 5px;
+  margin-bottom: 5px;
+`;
 
 const Label = styled.label`
   font-family: "Open Sans", sans-serif;
@@ -16,7 +25,7 @@ class CompanyProfile extends Component {
   constructor(props) {
     super(props);
     const authUser = this.props.authUser;
-
+    this.handleStatisticsClose = this.handleStatisticsClose.bind(this);
     this.props.firebase
       .user(authUser.uid)
       .get()
@@ -24,7 +33,7 @@ class CompanyProfile extends Component {
         const dbUser = snapshot.data();
         console.log({ ...dbUser });
         // merge auth and db user
-        this.setState({ ...dbUser });
+        this.setState({ ...dbUser, openStatistics: false });
         console.log(this.state);
       });
   }
@@ -45,6 +54,16 @@ class CompanyProfile extends Component {
     });
   }
 
+  handleClickOpenStatistics = () => {
+    this.setState({
+      openStatistics: true
+    });
+  };
+
+  handleStatisticsClose = () => {
+    this.setState({ openStatistics: false });
+  };
+
   render() {
     if (!this.state) {
       return (
@@ -60,22 +79,22 @@ class CompanyProfile extends Component {
       <Wrapper style={{ marginLeft: 10 }}>
         <div>
           <Box>
-            <h1> Edit profile</h1>
+            <h1> Edit profile <PersonPinIcon onClick={this.handleClickOpenStatistics} /></h1>
 
             <form onSubmit={this.onSubmit.bind(this)}>
               <Label style={{ float: "left", marginTop: 10, marginLeft: 20 }}>
-                Email <Ban style={{ width: 20 }} />{" "}
+              Input <Ban style={{ width: 20 }} />{" "}
               </Label>
-              <Email type="text" disabled value={email} />
+              <Input type="text" disabled value={email} />
               <Label style={{ float: "left", marginTop: 10, marginLeft: 20 }}>
                 Role <Ban style={{ width: 20 }} />{" "}
               </Label>
 
-              <Email type="text" value={role} disabled />
+              <Input type="text" value={role} disabled />
               <Label style={{ float: "left", marginTop: 10, marginLeft: 20 }}>
                 Company name{" "}
               </Label>
-              <Email
+              <Input
                 type="text"
                 value={fullName}
                 onChange={e => this.onTodoChange("fullName", e.target.value)}
@@ -85,7 +104,7 @@ class CompanyProfile extends Component {
                 {" "}
                 Location{" "}
               </Label>
-              <Email
+              <Input
                 type="text"
                 value={location}
                 onChange={e => this.onTodoChange("location", e.target.value)}
@@ -95,7 +114,7 @@ class CompanyProfile extends Component {
                 {" "}
                 Phone Number{" "}
               </Label>
-              <Email
+              <Input
                 type="number"
                 value={phoneNumber}
                 onChange={e => this.onTodoChange("phoneNumber", e.target.value)}
@@ -105,6 +124,7 @@ class CompanyProfile extends Component {
             </form>
           </Box>
         </div>
+        <CurrentUserStatistics firebase={this.props.firebase} open={this.state.openStatistics} authUser={this.props.authUser} handleClose={this.handleStatisticsClose} />
       </Wrapper>
     );
   }

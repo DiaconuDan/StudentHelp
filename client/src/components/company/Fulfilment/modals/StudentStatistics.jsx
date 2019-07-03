@@ -2,24 +2,24 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import { Wrapper, Email } from "../../../general/SignIn/SignIn";
+import { Wrapper, Input } from "../../../general/SignIn/SignIn";
 import { DialogTitle, DialogActions, DialogContent } from "../styles";
 import styled from "styled-components";
-import StarRatingComponent from "react-star-rating-component";
+// import StarRatingComponent from "react-star-rating-component";
 
-const StarRating = styled(StarRatingComponent)`
-  padding: 8px;
-  width: 250px;
-  margin-top: 5px;
-  margin-left: -20px;
-  font-size: 1em;
-  border-radius: 4px;
-`;
+// const StarRating = styled(StarRatingComponent)`
+//   padding: 8px;
+//   width: 250px;
+//   margin-top: 5px;
+//   margin-left: -20px;
+//   font-size: 1em;
+//   border-radius: 4px;
+// `;
 
-const Label = styled.label`
-  font-family: "Open Sans", sans-serif;
-  font-size: 1em;
-`;
+// const Label = styled.label`
+//   font-family: "Open Sans", sans-serif;
+//   font-size: 1em;
+// `;
 const Box = styled.div`
   background: white;
   width: 300px;
@@ -134,23 +134,23 @@ class StudentStatistics extends Component {
                               <h4
                         
                               >
-                                Avg. rating of {this.state.statisticsOfStudents[index].score / this.state.statisticsOfStudents[index].numberOfReceivedRatings } from {this.state.statisticsOfStudents[index].numberOfReceivedRatings} {this.state.statisticsOfStudents[index].numberOfReceivedRatings > 1 ? 'reviews':'review'}
+                                Avg. rating of {(this.state.statisticsOfStudents[index].score / this.state.statisticsOfStudents[index].numberOfReceivedRatings).toFixed(2) } from {this.state.statisticsOfStudents[index].numberOfReceivedRatings} {this.state.statisticsOfStudents[index].numberOfReceivedRatings > 1 ? 'reviews':'review'}
                               </h4>
                             )}
-                            <Email
+                            <Input
                             style={{ textAlign: "center" }}
                             type="text"
                             value={"Fullname: " + response.studentDetails.fullName}
                             readonly="readonly"
                           />
                           
-                          <Email
+                          <Input
                             style={{ textAlign: "center" }}
                             type="text"
                             value={"Email: " + response.studentDetails.email}
                             readonly="readonly"
                           />
-                          <Email
+                          <Input
                             style={{ textAlign: "center" }}
                             type="text"
                             value={
@@ -158,7 +158,7 @@ class StudentStatistics extends Component {
                             }
                             readonly="readonly"
                           />
-                          <Email
+                          <Input
                             style={{ textAlign: "center" }}
                             type="text"
                             value={
@@ -172,7 +172,7 @@ class StudentStatistics extends Component {
                             <h4> Feedbacks: </h4>
                           {this.state.statisticsOfStudents && this.state.statisticsOfStudents[index] &&
                             this.state.statisticsOfStudents[index].feedbacks.map((feedback, newIndex) => {
-                              return <Email
+                              return <Input
                                 style={{ textAlign: "center", display: this.state.statisticsOfStudents[index].numberOfReceivedRatings - 1 < newIndex ? "none" : "inline" }}
                                 type="text"
                                 value={

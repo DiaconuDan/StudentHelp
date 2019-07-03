@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   margin: 100px 0px 20px 0px;
 `;
 
-export const Email = styled.input`
+export const Input = styled.input`
   background: #ecf0f1;
   border: #ccc 1px solid;
   border-bottom: #ccc 2px solid;
@@ -135,7 +135,7 @@ class SignInFormBase extends Component {
       <div>
         <Box>
           <form onSubmit={this.onSubmit}>
-            <Email
+            <Input
               name="email"
               value={email}
               onChange={this.onChange}

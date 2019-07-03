@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import { Wrapper, Email, Box } from "../../../general/SignIn/SignIn";
+import { Wrapper, Input, Box } from "../../../general/SignIn/SignIn";
 import { DialogTitle, DialogActions, DialogContent } from '../styles';
 import StarRatingComponent from 'react-star-rating-component';
 
@@ -127,7 +127,7 @@ class AddReview extends Component {
                           />
                           </div>
                           <h4 style={{ textAlign: "center" }}> Feedback {student.studentData.fullName}  </h4>
-                          <Email
+                          <Input
                             style={{ textAlign: "center" }}
                             name={this.state.students[index].feedbackName}
                             type="text"

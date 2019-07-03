@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import styled from "styled-components";
 
 import { withFirebase } from '../Firebase';
-import { Wrapper, Email, Password, Button, Box, Error } from "../SignIn/SignIn";
+import { Wrapper, Input, Password, Button, Box, Error } from "../SignIn/SignIn";
 import * as ROLES from "./roles";
 
 export const Options = styled.select`
@@ -116,14 +116,14 @@ class SignUpFormBase extends Component {
               <option value={ROLES.STUDENT} > Student account</option>
               <option value={ROLES.COMPANY}> Company account</option>
             </Options>
-            <Email
+            <Input
               name="fullName"
               value={fullName}
               onChange={this.onChange}
               type="text"
               placeholder="Full Name"
             />
-            <Email
+            <Input
               name="email"
               value={email}
               onChange={this.onChange}

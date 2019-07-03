@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import Typography from "@material-ui/core/Typography";
-import { Wrapper, Input, TextArea } from "../../../general/SignIn/SignIn";
-import { DialogTitle, DialogActions, DialogContent, styles } from "../styles";
+import { Wrapper, Input } from "../../../general/SignIn/SignIn";
+import { DialogTitle, DialogActions, DialogContent } from "../../../company/Fulfilment/styles";
 import styled from "styled-components";
 import StarRatingComponent from "react-star-rating-component";
 
@@ -28,10 +28,11 @@ const Box = styled.div`
   margin: 0 auto 0 auto;
   padding: 0px 0px 20px 0px;
 `;
+
 class CurrentUserStatistics extends Component {
   constructor(props) {
     super(props);
-
+  console.log("!!", this.props.authUser) ;
     this.state = {
       handleClose: this.props.handleClose,
       feedbackArray: [],
@@ -41,46 +42,33 @@ class CurrentUserStatistics extends Component {
 
   componentDidMount() {
     let feedbackArray = [];
-
-    // ia id-ul companiei
-    // cauta-l peste tot in jobs cu responses
-    // score array
-    // feedbacks arrays
-    // avg score: suma score/ core.length
-    // set this as this as state
-    this.props.firebase
-      .jobs() // ma duc in joburile companiei
-      .onSnapshot(jobsSnapshot => {
-        let id;
-        let score = 0;
-        jobsSnapshot.forEach(jobDoc => {
-          const job = jobDoc.data();
-          console.log(job);
-          console.log(this.props.authUser);
+    let score = 0;
+    this.props.firebase.jobs().onSnapshot(jobSnapshot => {
+      jobSnapshot.forEach(jobDoc => {
+     
           const responses = jobDoc.data().responses;
           responses.forEach(response => {
             if (
-              response.studentUserUID === this.props.authUserUID &&
               response.studentResponse === true &&
-              response.feedback !== undefined &&
-              response.rating !== undefined
+              response.feedbackGivenFromCompany !== undefined &&
+              response.ratingGivenFromCompany !== undefined &&
+              response.studentUserUID === this.props.authUser.uid
             ) {
+                console.log("!!", response) ;
               score += response.feedback;
-              console.log(response);
               feedbackArray.push({
-                feedback: response.feedback,
-                rating: response.rating
+                feedback: response.feedbackGivenFromCompany,
+                rating: response.ratingGivenFromCompany
               });
             }
           });
-        });
-
-        this.setState({
-          handleClose: this.props.handleClose,
-          feedbackArray,
-          score
-        });
       });
+      this.setState({
+        handleClose: this.props.handleClose,
+        feedbackArray,
+        score
+      });
+    });
   }
   onTodoChange(name, value) {
     this.setState({
@@ -88,36 +76,39 @@ class CurrentUserStatistics extends Component {
     });
   }
 
+ 
+
+ 
   render() {
     if (this.state.handleClose && this.state.feedbackArray) {
       let score = 0;
       this.state.feedbackArray.forEach(feedback => {
         score += feedback.rating;
       });
-      console.log(score);
+      console.log(this.state.feedbackArray);
       return (
         <div>
           <Dialog
             onClose={this.state.handleClose}
             aria-labelledby="customized-dialog-title"
             open={this.props.open}
-            style={{ marginTop: -30 }}
+            style={{ marginTop: -20 }}
           >
             <DialogTitle
               id="customized-dialog-title"
               onClose={this.props.handleClose}
             >
-              Your stats
+             Your statistics
             </DialogTitle>
             <DialogContent>
               <Wrapper style={{ marginTop: -10 }}>
                 <Typography gutterBottom>
                   <Box>
                     {this.state.feedbackArray.length !== 0 && (
-                      <h4 style={{ marginLeft: -60 }}>
-                        Avg. rating of {(score / this.state.feedbackArray.length).toFixed(2)}{" "}
-                        from {this.state.feedbackArray.length} reviews
-                      </h4>
+                      <h3 style={{ textAlign: "center" }}>
+                        Avg. rating of {(score / this.state.feedbackArray.length).toFixed(2)}
+                        /10 from {this.state.feedbackArray.length} reviews
+                      </h3>
                     )}
                     {this.state.feedbackArray &&
                       this.state.feedbackArray.map(feedback => {
@@ -159,7 +150,7 @@ class CurrentUserStatistics extends Component {
                         );
                       })}
                     {this.state.feedbackArray.length === 0 && (
-                      <h3>Looking for ratings for this company.. </h3>
+                      <h3>Looking for statistics... </h3>
                     )}
                   </Box>
                 </Typography>

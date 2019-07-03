@@ -9,7 +9,7 @@ import {
 } from "react-notifications";
 import {
   Wrapper,
-  Email,
+  Input,
   Button,
   Box,
   Error
@@ -90,35 +90,35 @@ class AddJob extends Component {
             <NotificationContainer />
             <h1>Add Job</h1>
             <form onSubmit={this.onSubmit.bind(this)}>
-              <Email
+              <Input
                 name="location"
                 type="text"
                 placeholder="Location"
                 onChange={this.onChange}
                 required
               />
-              <Email
+              <Input
                 name="jobDescription"
                 type="text"
                 placeholder="Job description"
                 onChange={this.onChange}
                 required
               />
-              <Email
+              <Input
                 name="studentsNumber"
                 type="number"
                 placeholder="Number of students needed"
                 onChange={this.onChange}
                 required
               />
-              <Email
+              <Input
                 name="hourlyPayment"
                 type="number"
                 placeholder="Payment per hour in RON"
                 onChange={this.onChange}
                 required
               />
-              <Email
+              <Input
                 name="date"
                 type="text"
                 placeholder="Date"
@@ -126,7 +126,7 @@ class AddJob extends Component {
                 onChange={this.onChange}
                 required
               />
-              <Email
+              <Input
                 name="startHour"
                 type="text"
                 placeholder="Starting hour"
@@ -134,7 +134,7 @@ class AddJob extends Component {
                 onChange={this.onChange}
                 required
               />
-              <Email
+              <Input
                 name="endHour"
                 type="text"
                 placeholder="Ending hour"
