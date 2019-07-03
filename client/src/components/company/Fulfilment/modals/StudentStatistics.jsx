@@ -118,7 +118,7 @@ class StudentStatistics extends Component {
                         No students registered yet{" "}
                       </h3>
                     )}
-                    ;
+                    
                     {this.props.activeRow.responses.map((response, index) => {
                       return (
                         <div
