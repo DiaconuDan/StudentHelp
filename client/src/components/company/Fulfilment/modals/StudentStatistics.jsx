@@ -33,7 +33,8 @@ class StudentStatistics extends Component {
     super(props);
     console.log("!!!!!", this.props.activeRow);
     this.state = {
-      handleClose: this.props.handleClose
+      handleClose: this.props.handleClose,
+      statisticsOfStudents: []
     };
   }
 
@@ -44,36 +45,50 @@ class StudentStatistics extends Component {
   }
 
   componentDidMount() {
-    // let score = 0 ;
-    // let numberOfReceivedRatings = 0 ;
-    // this.props.firebase.jobs().onSnapshot(jobSnapshot => {
-    //   jobSnapshot.forEach(jobDoc => {
-    //       const responses = jobDoc.data().responses;
-    //         console.log(this.props.activeRow);
-    //         console.log(this.props.activeRow.studentUserUID);
-    //       responses.forEach(response => {
-    //         if (
-    //           response.studentResponse === true &&
-    //           response.feedbackGivenFromCompany !== undefined &&
-    //           response.ratingGivenFromCompany!== undefined && response.studentUserUID === this.props.activeRow.studentUserUID
-    //         ) {
-    //            console.log('intrat prietene') ;
-    //           score += response.feedbackGivenFromCompany;
-    //           numberOfReceivedRatings += 1;
-    //         }
-    //       });
-    //   });
-    //   this.setState({
-    //     handleClose: this.props.handleClose,
-    //     numberOfReceivedRatings,
-    //     score
-    //   });
-    // });
+    let statisticsOfStudents = [];
+
+    this.props.activeRow.responses.forEach(student => {
+      let score = 0;
+      let numberOfReceivedRatings = 0;
+      let receivedFeedbacksOfStudent = [];
+      this.props.firebase.jobs().onSnapshot(jobSnapshot => {
+        jobSnapshot.forEach(jobDoc => {
+          const responses = jobDoc.data().responses;
+
+          responses.forEach(response => {
+            if (
+              response.studentResponse === true &&
+              response.feedbackGivenFromCompany !== undefined &&
+              response.ratingGivenFromCompany !== undefined &&
+              response.studentUserUID === student.studentUserUID
+            ) {
+              score += response.ratingGivenFromCompany;
+              numberOfReceivedRatings += 1;
+              receivedFeedbacksOfStudent.push(
+                response.feedbackGivenFromCompany
+              );
+            }
+          });
+        });
+
+        statisticsOfStudents.push({
+          score: score,
+          numberOfReceivedRatings: numberOfReceivedRatings,
+          feedbacks: receivedFeedbacksOfStudent
+        });
+
+        console.log(statisticsOfStudents);
+        this.setState({
+          statisticsOfStudents: statisticsOfStudents
+        });
+      });
+    });
+    
+
   }
 
   render() {
-    if (this.state.handleClose) {
-      console.log(this.state);
+    if (this.state.handleClose && this.state.statisticsOfStudents) {
       return (
         <div>
           <Dialog
@@ -144,6 +159,17 @@ class StudentStatistics extends Component {
                             }
                             readonly="readonly"
                           />
+                          {this.state.statisticsOfStudents && this.state.statisticsOfStudents[index] &&
+                            this.state.statisticsOfStudents[index].feedbacks.map((feedback, newIndex) => {
+                              return  <Email
+                              style={{ textAlign: "center", display: this.state.statisticsOfStudents[index].numberOfReceivedRatings - 1 < newIndex? "none" : "block" }}
+                              type="text"
+                              value={
+                               feedback
+                              }
+                              readonly="readonly"
+                            />
+                            })}
                         </div>
                       );
                     })}

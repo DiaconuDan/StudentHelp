@@ -21,7 +21,7 @@ class SimpleTable extends Component {
   constructor(props) {
     super(props);
     this.handleAddJobRatingClose = this.handleAddStudentRatingClose.bind(this);
-    // this.handleStudentStatisticsClose = this.handleStudentStatisticsClose.bind(this);
+    this.handleStudentStatisticsClose = this.handleStudentStatisticsClose.bind(this);
     this.state = {
       openAddStudentRating: false,
       openStudentStatistics: false,
