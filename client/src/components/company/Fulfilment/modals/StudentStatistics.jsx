@@ -83,12 +83,14 @@ class StudentStatistics extends Component {
         });
       });
     });
-    
+
 
   }
 
   render() {
     if (this.state.handleClose && this.state.statisticsOfStudents) {
+      
+  
       return (
         <div>
           <Dialog
@@ -120,22 +122,28 @@ class StudentStatistics extends Component {
                     {this.props.activeRow.responses.map((response, index) => {
                       return (
                         <div
-                          style={{ paddingBottom: 15, fontStyle: "Montserrat" }}
+                          style={{
+                            paddingBottom: 15, fontStyle: "Montserrat", border: "1px solid rgb(87, 48, 139)",
+                            borderRadius: "14px",
+                            marginBottom: "8px"
+                          }}
                         >
-                          <h4
-                            style={{
-                              textAlign: "center",
-                              fontStyle: "Montserrat"
-                            }}
-                          >
-                            {" "}
-                            Student {response.studentDetails.fullName}{" "}
-                          </h4>
-                          {/* <div style={{ fontSize: 30 }}>
-                                                            <StarRatingComponent
-                                                                value={9}
-                                                                starCount={10} />
-                                                        </div> */}
+                        
+
+                          {this.state.statisticsOfStudents && this.state.statisticsOfStudents[index] && (
+                              <h4
+                        
+                              >
+                                Avg. rating of {this.state.statisticsOfStudents[index].score / this.state.statisticsOfStudents[index].numberOfReceivedRatings } from {this.state.statisticsOfStudents[index].numberOfReceivedRatings} {this.state.statisticsOfStudents[index].numberOfReceivedRatings > 1 ? 'reviews':'review'}
+                              </h4>
+                            )}
+                            <Email
+                            style={{ textAlign: "center" }}
+                            type="text"
+                            value={"Fullname: " + response.studentDetails.fullName}
+                            readonly="readonly"
+                          />
+                          
                           <Email
                             style={{ textAlign: "center" }}
                             type="text"
@@ -159,16 +167,19 @@ class StudentStatistics extends Component {
                             }
                             readonly="readonly"
                           />
+                        
+                        
+                            <h4> Feedbacks: </h4>
                           {this.state.statisticsOfStudents && this.state.statisticsOfStudents[index] &&
                             this.state.statisticsOfStudents[index].feedbacks.map((feedback, newIndex) => {
-                              return  <Email
-                              style={{ textAlign: "center", display: this.state.statisticsOfStudents[index].numberOfReceivedRatings - 1 < newIndex? "none" : "block" }}
-                              type="text"
-                              value={
-                               feedback
-                              }
-                              readonly="readonly"
-                            />
+                              return <Email
+                                style={{ textAlign: "center", display: this.state.statisticsOfStudents[index].numberOfReceivedRatings - 1 < newIndex ? "none" : "inline" }}
+                                type="text"
+                                value={
+                                feedback
+                                }
+                                readonly="readonly"
+                              />
                             })}
                         </div>
                       );
